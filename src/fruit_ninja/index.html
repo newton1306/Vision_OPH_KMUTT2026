@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fruit Ninja - Vision Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="container">
+    <!-- Mirrored Webcam video element for MediaPipe tracking -->
+    <video id="webcam-video" playsinline muted autoplay></video>
+
+    <!-- Main Game Canvas (Renders full authentic Fruit Ninja experience) -->
+    <canvas id="game-canvas"></canvas>
+
+    <!-- Subtle Camera Status & Controls Overlay -->
+    <div id="footer-status-bar">
+      <div class="status-pill">
+        <span id="cam-dot" class="cam-dot"></span>
+        <span id="cam-status">Starting Hand Tracking...</span>
+      </div>
+      <div class="shortcut-pill">
+        <span><kbd>ESC</kbd> ออกจากเกม</span>
+        <span><kbd>F</kbd> เต็มจอ</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Local Offline Libraries & Scripts (100% Offline) -->
+  <script src="../shared/audio/sound.js"></script>
+  <script src="../shared/assets/sprites.js"></script>
+  <script src="../shared/vision/hand_tracker.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

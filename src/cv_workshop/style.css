@@ -1,0 +1,799 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none;
+}
+
+body, html {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  background-color: #f0f2f5;
+  color: #1e293b;
+}
+
+#app-root {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* ==========================================================================
+   1. MICROSOFT MAKECODE TOP NAVIGATION BAR (#3a54a5)
+   ========================================================================== */
+.makecode-header {
+  height: 54px;
+  background: #3a54a5;
+  border-bottom: 1px solid #293e80;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  flex-shrink: 0;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* MakeCode Pill Switcher: [🧩 Blocks] [📄 JavaScript ▾] */
+.pill-switcher {
+  display: flex;
+  background: #283e82;
+  padding: 3px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.pill-tab {
+  background: transparent;
+  border: none;
+  color: #cbd5e1;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 6px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+
+.pill-tab:hover {
+  color: #ffffff;
+}
+
+.pill-tab.active {
+  background: #ffffff;
+  color: #3a54a5;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+}
+
+.pill-icon {
+  font-size: 15px;
+}
+
+.arrow-down {
+  font-size: 10px;
+  opacity: 0.8;
+  margin-left: 2px;
+}
+
+/* Header Center: Workshop Challenges */
+.header-center {
+  display: flex;
+  align-items: center;
+}
+
+.mode-selector {
+  display: flex;
+  background: rgba(0, 0, 0, 0.18);
+  padding: 3px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  gap: 4px;
+}
+
+.mode-btn {
+  background: transparent;
+  border: none;
+  color: #e2e8f0;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 13px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.mode-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.mode-btn.active {
+  background: #7c3aed;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.4);
+}
+
+/* Header Right: Actions */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-run {
+  background: #107c41;
+  border: none;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 800;
+  padding: 7px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 2px 6px rgba(16, 124, 65, 0.35);
+  transition: all 0.15s ease;
+}
+
+.btn-run:hover {
+  background: #15803d;
+  transform: translateY(-1px);
+}
+
+.btn-run.running {
+  background: #d97706;
+  box-shadow: 0 2px 6px rgba(217, 119, 6, 0.35);
+}
+
+.btn-reset {
+  background: #dc2626;
+  border: none;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 800;
+  padding: 7px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 2px 6px rgba(220, 38, 38, 0.35);
+  transition: all 0.15s ease;
+}
+
+.btn-reset:hover {
+  background: #ef4444;
+  transform: translateY(-1px);
+}
+
+.btn-icon {
+  font-size: 13px;
+}
+
+/* ==========================================================================
+   2. MAIN CONTENT SPLIT LAYOUT
+   ========================================================================== */
+main {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+}
+
+/* LEFT PANEL: BLOCKLY CODE EDITOR WITH MAKECODE WORKSPACE */
+#blockly-panel {
+  flex: 1.25;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: #f0f2f5;
+  background-image: radial-gradient(#cbd5e1 1.4px, transparent 1.4px);
+  background-size: 24px 24px;
+  border-right: 2px solid #cbd5e1;
+}
+
+/* Blockly DOM canvas */
+#blockly-div {
+  width: 100%;
+  height: calc(100% - 50px);
+  position: relative;
+}
+
+/* MakeCode Category Rail Overrides in Blockly 13 */
+.blocklyToolboxDiv {
+  background-color: #ffffff !important;
+  border-right: 1px solid #e2e8f0 !important;
+  color: #1e293b !important;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
+  width: 190px !important;
+  padding-top: 8px !important;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.04) !important;
+}
+
+.blocklyTreeRow {
+  height: 40px !important;
+  line-height: 40px !important;
+  padding: 0 12px !important;
+  margin: 2px 0 !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  border-left: 8px solid transparent !important;
+  border-radius: 0 6px 6px 0 !important;
+  transition: background-color 0.15s ease !important;
+}
+
+.blocklyTreeRow:hover {
+  background-color: #f1f5f9 !important;
+}
+
+.blocklyTreeSelected {
+  background-color: #e2e8f0 !important;
+}
+
+.blocklyTreeLabel {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
+  font-size: 13.5px !important;
+  font-weight: 700 !important;
+}
+
+.blocklyFlyoutBackground {
+  fill: #ffffff !important;
+  fill-opacity: 0.98 !important;
+  filter: drop-shadow(4px 0 14px rgba(0, 0, 0, 0.08)) !important;
+}
+
+/* JavaScript Code Preview Viewport Overlay (Starts after 190px Category Rail) */
+.js-preview-container {
+  position: absolute;
+  top: 0;
+  left: 190px;
+  width: calc(100% - 190px);
+  height: calc(100% - 50px);
+  background: #0d1117;
+  color: #58a6ff;
+  font-family: 'Cascadia Code', 'Consolas', monospace;
+  z-index: 60;
+  padding: 24px 28px;
+  overflow-y: auto;
+  box-sizing: border-box;
+  border-left: 2px solid #30363d;
+}
+
+.js-preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #30363d;
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: #8b949e;
+}
+
+.btn-close-js {
+  background: #21262d;
+  border: 1px solid #30363d;
+  color: #f0f6fc;
+  padding: 5px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.btn-close-js:hover {
+  background: #30363d;
+}
+
+#js-code-display {
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  color: #7ee787;
+}
+
+/* ==========================================================================
+   3. MAKECODE BOTTOM TOOLBAR (media_1789750720986.png)
+   ========================================================================== */
+.makecode-bottom-bar {
+  height: 50px;
+  background: #ffffff;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  z-index: 40;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.03);
+}
+
+.bottom-left-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.active-challenge-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #334155;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.active-challenge-badge .badge-icon {
+  font-size: 14px;
+}
+
+.active-challenge-badge .badge-text {
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+  max-width: 190px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.bottom-action-btn {
+  width: 34px;
+  height: 34px;
+  background: #3a54a5;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(58, 84, 165, 0.25);
+  transition: all 0.15s ease;
+  padding: 0;
+}
+
+.bottom-action-btn svg {
+  display: block;
+  stroke: #ffffff !important;
+}
+
+.bottom-action-btn:hover {
+  background: #2e4387;
+  transform: translateY(-1px);
+}
+
+.bottom-action-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 2px rgba(58, 84, 165, 0.3);
+}
+
+.bottom-action-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.bottom-right-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  height: 100%;
+}
+
+.action-btn-cluster {
+  display: flex;
+  gap: 4px;
+}
+
+/* ==========================================================================
+   4. RIGHT PANEL: CAMERA & LIVE VISION PREVIEW
+   ========================================================================== */
+#preview-panel {
+  flex: 0.85;
+  height: 100%;
+  background: #020617;
+  border-left: 2px solid #334155;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.viewport-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+}
+
+#cv-video {
+  display: none;
+}
+
+#cv-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  pointer-events: none;
+}
+
+
+
+/* Live Sensor HUD */
+.sensor-hud {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.hud-pill {
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #e2e8f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.hud-pill .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ef4444;
+}
+
+.hud-pill .dot.active {
+  background: #22c55e;
+  box-shadow: 0 0 10px #22c55e;
+}
+
+/* Floating on-screen printed messages from Blockly */
+#floating-text-container {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;
+  max-width: 90%;
+  text-align: center;
+  z-index: 25;
+  pointer-events: none;
+}
+
+/* Challenge C: Floating Shape Action Bar (Submit & Clear) */
+.shape-action-bar {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 4px 8px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), 0 0 10px rgba(56, 189, 248, 0.15);
+  z-index: 30;
+  pointer-events: auto;
+  white-space: nowrap;
+  flex-wrap: nowrap;
+  max-width: 95%;
+  box-sizing: border-box;
+}
+
+.btn-shape-action {
+  border: none;
+  border-radius: 9999px;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  line-height: 1.2;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.18s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-submit-shape {
+  background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
+}
+
+.btn-submit-shape.needs-blocks {
+  background: linear-gradient(135deg, #475569 0%, #334155 100%);
+  color: #cbd5e1;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  border: 1px dashed rgba(255, 255, 255, 0.25);
+}
+
+.btn-submit-shape.needs-blocks:hover {
+  background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+  color: #ffffff;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+}
+
+.btn-submit-shape:hover {
+  background: linear-gradient(135deg, #0369a1 0%, #1d4ed8 100%);
+  transform: translateY(-1.5px) scale(1.02);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.55);
+}
+
+.btn-submit-shape:active {
+  transform: translateY(1px);
+}
+
+.btn-clear-drawing {
+  background: rgba(51, 65, 85, 0.85);
+  color: #f1f5f9;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.btn-clear-drawing:hover {
+  background: rgba(71, 85, 105, 0.95);
+  transform: translateY(-1.5px);
+}
+
+.btn-clear-drawing:active {
+  transform: translateY(1px);
+}
+
+.btn-shape-icon {
+  font-size: 12px;
+}
+
+.shape-gesture-hint {
+  font-size: 10.5px;
+  color: #94a3b8;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 9999px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.shape-gesture-hint .hint-divider {
+  opacity: 0.4;
+  margin: 0 1px;
+}
+
+/* 3D Pill Badge with Curled Blue Ribbon (Reference Design) */
+.hud-ribbon-pill-container {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.55));
+  pointer-events: none;
+  user-select: none;
+  opacity: 1;
+}
+
+.hud-ribbon-pill-container .ribbon-svg {
+  position: absolute;
+  top: -14px;
+  width: 82%;
+  min-width: 250px;
+  max-width: 440px;
+  height: 44px;
+  z-index: 10;
+  filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.45));
+  pointer-events: none;
+}
+
+.hud-ribbon-pill-container .hud-pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 320px;
+  max-width: 85vw;
+  height: 84px;
+  border-radius: 9999px;
+  background: linear-gradient(180deg, #f25525 0%, #eb2c23 50%, #c91f16 100%);
+  border: 3.5px solid #ad1b11;
+  box-sizing: border-box;
+  padding: 20px 42px 10px 42px;
+  box-shadow: 
+    inset 0 2.5px 3px rgba(255, 255, 255, 0.5),
+    inset 0 -3.5px 6px rgba(0, 0, 0, 0.35),
+    0 6px 18px rgba(0, 0, 0, 0.35);
+  z-index: 5;
+}
+
+.hud-ribbon-pill-container .hud-pill::before {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 10px;
+  right: 10px;
+  bottom: 4px;
+  border-radius: 9999px;
+  border: 1.5px solid rgba(255, 255, 255, 0.22);
+  pointer-events: none;
+}
+
+.hud-ribbon-pill-container .hud-pill-text {
+  font-family: 'Outfit', 'Rajdhani', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  text-shadow: 0 1.5px 3px rgba(0, 0, 0, 0.6);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  z-index: 6;
+}
+
+.printed-text-bubble {
+  display: inline-flex;
+}
+
+@keyframes popIn {
+  from { transform: scale(0.7); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Reset Confirmation Modal */
+#reset-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(6px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+#reset-modal.active {
+  display: flex;
+}
+
+.modal-box {
+  background: #1e293b;
+  border: 1px solid #475569;
+  border-radius: 16px;
+  padding: 32px;
+  max-width: 440px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+}
+
+.modal-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+
+.modal-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: #f8fafc;
+  margin-bottom: 8px;
+}
+
+.modal-desc {
+  font-size: 14px;
+  color: #94a3b8;
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.btn-modal-cancel {
+  background: #334155;
+  border: none;
+  color: #cbd5e1;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-modal-confirm {
+  background: #dc2626;
+  border: none;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 10px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Toast notification (Positioned in bottom toolbar to the left of the button cluster) */
+#toast {
+  position: absolute;
+  right: calc(100% + 12px);
+  top: 50%;
+  transform: translateY(-50%) translateX(8px) scale(0.96);
+  white-space: nowrap;
+  background: #10b981;
+  color: #ffffff;
+  padding: 5px 14px;
+  border-radius: 9999px;
+  font-size: 12.5px;
+  font-weight: 700;
+  box-shadow: 0 3px 12px rgba(16, 185, 129, 0.35);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 380px;
+}
+
+#toast.show {
+  transform: translateY(-50%) translateX(0) scale(1);
+  opacity: 1;
+  visibility: visible;
+}

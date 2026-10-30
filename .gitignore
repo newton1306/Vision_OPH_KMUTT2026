@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+
+# Production builds & distribution binaries
+dist/
+
+# User raw 3D assets source folder
+3d_model_source/
+
+# OS & Editor generated files
+.agents/
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+.idea/
+
+# Log files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

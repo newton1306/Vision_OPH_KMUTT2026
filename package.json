@@ -1,0 +1,58 @@
+{
+  "name": "vision-workshop-suite",
+  "version": "1.0.2",
+  "description": "Offline Computer Vision Mini Workshop & Fruit Ninja Game Suite",
+  "main": "src/main/main.js",
+  "scripts": {
+    "start": "electron .",
+    "start:fruit": "electron . --app=fruit-ninja",
+    "start:workshop": "electron . --app=cv-workshop",
+    "build:ico": "node scripts/make_ico.js",
+    "dist": "electron-builder --win --x64"
+  },
+  "build": {
+    "appId": "com.cvworkshop.suite",
+    "productName": "CV Workshop Suite",
+    "asar": false,
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "src/**/*",
+      "build/icon.ico",
+      "build/fruit_ninja.ico",
+      "build/cv_workshop.ico",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": false,
+      "createStartMenuShortcut": false,
+      "include": "build/installer.nsh"
+    }
+  },
+  "keywords": [
+    "computer-vision",
+    "blockly",
+    "mediapipe",
+    "education"
+  ],
+  "author": "Vision Workshop Team",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^44.4.1",
+    "electron-builder": "^26.15.3"
+  },
+  "dependencies": {
+    "@mediapipe/camera_utils": "^0.3.1675466862",
+    "@mediapipe/hands": "^0.4.1675469240",
+    "blockly": "^13.3.0",
+    "three": "^0.186.1"
+  }
+}

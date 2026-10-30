@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Computer Vision Mini Workshop</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app-root">
+    <!-- MICROSOFT MAKECODE TOP HEADER -->
+    <header class="makecode-header">
+      <div class="header-left">
+        <!-- MakeCode Blocks / JavaScript Pill Switcher -->
+        <div class="pill-switcher">
+          <button id="tab-blocks" class="pill-tab active">
+            <span class="pill-icon">🧩</span> Blocks
+          </button>
+          <button id="tab-js" class="pill-tab">
+            <span class="pill-icon">📄</span> JavaScript <span class="arrow-down">▾</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Workshop Challenge Selectors -->
+      <div class="header-center">
+        <div class="mode-selector">
+          <button class="mode-btn active" data-mode="challengeA">✨ Challenge A</button>
+          <button class="mode-btn" data-mode="challengeB">🖐️ Challenge B</button>
+          <button class="mode-btn" data-mode="challengeC">📐 Challenge C</button>
+        </div>
+      </div>
+
+      <!-- Header Actions: Run & Reset -->
+      <div class="header-actions">
+        <button id="btn-run" class="btn-run running">
+          <span class="btn-icon">⏹</span> STOP
+        </button>
+        <button id="btn-reset" class="btn-reset">
+          <span class="btn-icon">🔄</span> RESET
+        </button>
+      </div>
+    </header>
+
+    <!-- MAIN WORKSPACE -->
+    <main>
+      <!-- LEFT PANEL: BLOCKLY CODE EDITOR WITH MAKECODE THEME -->
+      <section id="blockly-panel">
+        <!-- Main Blockly Canvas Workspace -->
+
+        <!-- Main Blockly Canvas Workspace -->
+        <div id="blockly-div"></div>
+
+        <!-- JavaScript Code Preview Viewport -->
+        <div id="js-preview-overlay" class="js-preview-container" style="display: none;">
+          <div class="js-preview-header">
+            <span>// Generated JavaScript Code (Live from Blocks)</span>
+            <button id="btn-close-js" class="btn-close-js">✕ Close Code View</button>
+          </div>
+          <pre><code id="js-code-display">// Your block code will generate live JavaScript here</code></pre>
+        </div>
+
+        <!-- MakeCode Bottom Toolbar (Challenge Badge, Undo/Redo, Center & Zoom) -->
+        <footer class="makecode-bottom-bar">
+          <div class="bottom-left-group">
+            <div class="active-challenge-badge" id="active-challenge-badge">
+              <span class="badge-icon">💥</span>
+              <span id="active-challenge-title" class="badge-text">Challenge A: Iron Man Palm Repulsor</span>
+            </div>
+          </div>
+
+          <div class="bottom-right-group">
+            <!-- Relocated Notification Toast (Positioned cleanly to the left of undo button) -->
+            <div id="toast">Session Reset Complete!</div>
+            <div class="action-btn-cluster">
+              <button id="btn-undo" class="bottom-action-btn" title="Undo (Ctrl+Z)">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 7v6h6"></path>
+                  <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"></path>
+                </svg>
+              </button>
+              <button id="btn-redo" class="bottom-action-btn" title="Redo (Ctrl+Y)">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 7v6h-6"></path>
+                  <path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3l3 2.7"></path>
+                </svg>
+              </button>
+            </div>
+            <div class="action-btn-cluster">
+              <button id="btn-zoom-out" class="bottom-action-btn" title="Zoom Out">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+              </button>
+              <button id="btn-center" class="bottom-action-btn" title="Center Workspace">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="7"></circle>
+                  <line x1="12" y1="2" x2="12" y2="6"></line>
+                  <line x1="12" y1="18" x2="12" y2="22"></line>
+                  <line x1="2" y1="12" x2="6" y2="12"></line>
+                  <line x1="18" y1="12" x2="22" y2="12"></line>
+                  <circle cx="12" cy="12" r="1.5" fill="#ffffff"></circle>
+                </svg>
+              </button>
+              <button id="btn-zoom-in" class="bottom-action-btn" title="Zoom In">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </footer>
+      </section>
+
+      <!-- RIGHT PANEL: CAMERA PREVIEW & HUD (Kept on the right) -->
+      <section id="preview-panel">
+        <div class="viewport-container">
+          <video id="cv-video" playsinline muted autoplay></video>
+          <canvas id="cv-canvas"></canvas>
+
+          <!-- Live Sensor HUD -->
+          <div class="sensor-hud">
+            <div class="hud-pill">
+              <span id="hud-hand-dot" class="dot"></span>
+              <span id="hud-hand-text">Hand: Searching ⚪</span>
+            </div>
+            <div class="hud-pill">
+              <span id="hud-fingers">🖐️ Fingers: -</span>
+            </div>
+            <div class="hud-pill">
+              <span id="hud-shape">📐 Shape: None</span>
+            </div>
+            <div class="hud-pill">
+              <span id="hud-fps">⚡ FPS: 60</span>
+            </div>
+          </div>
+
+          <!-- Challenge C: Shape Action Bar (Submit & Clear) -->
+          <div id="shape-action-bar" class="shape-action-bar" style="display: none;">
+            <button id="btn-submit-shape" class="btn-shape-action btn-submit-shape" title="Predict Shape">
+              <span class="btn-shape-icon">✨</span> ตรวจคำตอบ
+            </button>
+            <button id="btn-clear-drawing" class="btn-shape-action btn-clear-drawing" title="Clear Canvas">
+              <span class="btn-shape-icon">🧹</span> วาดใหม่
+            </button>
+            <div class="shape-gesture-hint">
+              <span>🤏 จีบนิ้ว = วาด</span>
+              <span class="hint-divider">|</span>
+              <span>🙌 2 มือ = ล้าง</span>
+            </div>
+          </div>
+
+          <!-- On-screen Floating Message -->
+          <div id="floating-text-container">
+            <div id="printed-text-bubble" class="hud-ribbon-pill-container" style="display: none;">
+              <svg class="ribbon-svg" viewBox="0 0 400 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="hudBlueFront" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#7da6d8"/>
+                    <stop offset="12%" stop-color="#4e72c5"/>
+                    <stop offset="48%" stop-color="#2a4ca7"/>
+                    <stop offset="100%" stop-color="#142c75"/>
+                  </linearGradient>
+                  <linearGradient id="hudCurlLeft" x1="100%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#141a4a"/>
+                    <stop offset="100%" stop-color="#222b72"/>
+                  </linearGradient>
+                  <linearGradient id="hudCurlRight" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#141a4a"/>
+                    <stop offset="100%" stop-color="#222b72"/>
+                  </linearGradient>
+                </defs>
+                <path d="M 24 22 C 10 22 2 12 14 3 C 22 -3 38 0 46 12 C 48 16 48 20 48 24 Z" fill="url(#hudCurlLeft)"/>
+                <path d="M 376 22 C 390 22 398 12 386 3 C 378 -3 362 0 354 12 C 352 16 352 20 352 24 Z" fill="url(#hudCurlRight)"/>
+                <path d="
+                  M 34 1 
+                  C 120 -1 280 -1 366 1 
+                  C 360 4 354 12 352 20 
+                  C 350 29 344 38 335 38 
+                  L 65 38 
+                  C 56 38 50 29 48 20 
+                  C 46 12 40 4 34 1 Z
+                " fill="url(#hudBlueFront)"/>
+              </svg>
+              <div class="hud-pill">
+                <span id="printed-text-content" class="hud-pill-text">Hello AI!</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Reset Session Confirmation Modal -->
+  <div id="reset-modal">
+    <div class="modal-box">
+      <div class="modal-icon">⚠️</div>
+      <h2 class="modal-title">Reset Workshop Session?</h2>
+      <p class="modal-desc">This will clear all blocks, reset drawings, clear memory, and prepare a fresh session for the next student.</p>
+      <div class="modal-buttons">
+        <button id="modal-cancel" class="btn-modal-cancel">Cancel</button>
+        <button id="modal-confirm" class="btn-modal-confirm">Yes, Reset Session</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Local Offline Libraries & Scripts (Zero CDN) -->
+  <script src="../shared/libs/blockly/blockly_compressed.js"></script>
+  <script src="../shared/libs/blockly/blocks_compressed.js"></script>
+  <script src="../shared/libs/blockly/javascript_compressed.js"></script>
+  <script>
+    if (typeof window.javascript !== 'undefined' && window.javascript.javascriptGenerator) {
+      window.Blockly.JavaScript = window.javascript.javascriptGenerator;
+    }
+  </script>
+  <script src="../shared/libs/blockly/msg/en.js"></script>
+
+  <script src="../shared/audio/sound.js"></script>
+  <script src="../shared/assets/sprites.js"></script>
+  <script src="../shared/vision/hand_tracker.js"></script>
+
+  <!-- Workshop Custom Blocks & App Controller -->
+  <script src="custom_blocks.js"></script>
+  <script src="templates.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
