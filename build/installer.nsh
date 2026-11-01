@@ -1,17 +1,21 @@
-; Custom NSIS installer script for dual shortcuts
+; Custom NSIS installer script for single unified desktop shortcut
 !macro customInstall
-  DetailPrint "Creating Desktop and Start Menu Shortcuts..."
+  DetailPrint "Creating Single Unified Desktop and Start Menu Shortcuts..."
   
-  ; Desktop Shortcuts
-  CreateShortcut "$DESKTOP\CV Workshop.lnk" "$INSTDIR\${APP_EXECUTABLE_FILENAME}" "--app=cv-workshop" "$INSTDIR\resources\app\build\cv_workshop.ico" 0
-  CreateShortcut "$DESKTOP\Fruit Ninja.lnk" "$INSTDIR\${APP_EXECUTABLE_FILENAME}" "--app=fruit-ninja" "$INSTDIR\resources\app\build\fruit_ninja.ico" 0
+  ; Single Desktop Shortcut (Opens directly to unblurred Main Menu)
+  CreateShortcut "$DESKTOP\CV Workshop Suite.lnk" "$INSTDIR\${APP_EXECUTABLE_FILENAME}" "" "$INSTDIR\resources\app\build\icon.ico" 0
   
-  ; Start Menu Shortcuts
-  CreateShortcut "$SMPROGRAMS\CV Workshop.lnk" "$INSTDIR\${APP_EXECUTABLE_FILENAME}" "--app=cv-workshop" "$INSTDIR\resources\app\build\cv_workshop.ico" 0
-  CreateShortcut "$SMPROGRAMS\Fruit Ninja.lnk" "$INSTDIR\${APP_EXECUTABLE_FILENAME}" "--app=fruit-ninja" "$INSTDIR\resources\app\build\fruit_ninja.ico" 0
+  ; Single Start Menu Shortcut
+  CreateShortcut "$SMPROGRAMS\CV Workshop Suite.lnk" "$INSTDIR\${APP_EXECUTABLE_FILENAME}" "" "$INSTDIR\resources\app\build\icon.ico" 0
 !macroend
 
 !macro customUnInstall
+  Delete "$DESKTOP\CV Workshop Suite.lnk"
+  Delete "$DESKTOP\Vision Workshop Suite.lnk"
+  Delete "$SMPROGRAMS\CV Workshop Suite.lnk"
+  Delete "$SMPROGRAMS\Vision Workshop Suite.lnk"
+  
+  ; Clean up legacy shortcuts if upgrading
   Delete "$DESKTOP\CV Workshop.lnk"
   Delete "$DESKTOP\Fruit Ninja.lnk"
   Delete "$SMPROGRAMS\CV Workshop.lnk"

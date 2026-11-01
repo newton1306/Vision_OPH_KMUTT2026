@@ -1,9 +1,9 @@
 @echo off
-title Vision OPH KMUTT 2026 - CV Workshop Launcher
+title Vision OPH KMUTT 2026 - Launcher
 cd /d "%~dp0"
 
 if exist "%~dp0dist\win-unpacked\CV Workshop Suite.exe" (
-  start "" "%~dp0dist\win-unpacked\CV Workshop Suite.exe" --app=cv-workshop
+  start "" "%~dp0dist\win-unpacked\CV Workshop Suite.exe"
   exit /b 0
 )
 
@@ -30,4 +30,4 @@ if not exist "%~dp0node_modules\" (
   )
 )
 
-call npm run start:workshop
+call npm start

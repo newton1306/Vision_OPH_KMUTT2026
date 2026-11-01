@@ -10,7 +10,8 @@ const filesToTest = [
   'src/fruit_ninja/game.js',
   'src/cv_workshop/custom_blocks.js',
   'src/cv_workshop/templates.js',
-  'src/cv_workshop/app.js'
+  'src/cv_workshop/app.js',
+  'src/menu/menu.js'
 ];
 
 let allPassed = true;
@@ -57,7 +58,7 @@ requiredOfflineFiles.forEach(relPath => {
 });
 
 // Check HTML files for prohibited external URLs
-const htmlFiles = ['src/fruit_ninja/index.html', 'src/cv_workshop/index.html'];
+const htmlFiles = ['src/fruit_ninja/index.html', 'src/cv_workshop/index.html', 'src/menu/index.html'];
 const cdnPatterns = [/http:\/\//i, /https:\/\//i, /cdn/i, /unpkg/i, /cdnjs/i];
 
 htmlFiles.forEach(relPath => {

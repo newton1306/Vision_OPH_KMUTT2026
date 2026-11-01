@@ -29,23 +29,21 @@ Choose the deployment method that fits your environment:
 ### Option A: Prebuilt Windows Installer (Recommended)
 Best for classroom laptops, event staff, and instructors.
 
-1. Download **`CV.Workshop.Suite.Setup.1.0.2.exe`** from the [GitHub Releases page](https://github.com/newton1306/Vision_OPH_KMUTT2026/releases/tag/v1.0.2).
+1. Download the prebuilt installer from GitHub Releases.
 2. Run the setup wizard.
-3. The installer creates two separate shortcuts on the Desktop and Start Menu:
-   - **CV Workshop** (launches directly into the visual programming workshop)
-   - **Fruit Ninja** (launches directly into the 3D motion game)
+3. The installer creates a single unified shortcut on the Desktop and Start Menu:
+   - **CV Workshop Suite** (launches into the Main Menu portal with the initial crisp background)
 
 ---
 
 ### Option B: Standalone Portable Package (Zero Installation)
 Best for computers with restricted administrative privileges or running from a USB drive.
 
-1. Download **`CV-Workshop-Suite-1.0.2-win-x64-portable.zip`** from [GitHub Releases](https://github.com/newton1306/Vision_OPH_KMUTT2026/releases/tag/v1.0.2).
+1. Download the portable zip archive from GitHub Releases.
 2. Extract the archive to any target folder.
-3. Launch directly using dedicated batch launchers:
-   - `Launch CV Workshop.bat` -> Launches CV Workshop
-   - `Launch Fruit Ninja.bat` -> Launches Fruit Ninja
-   - `CV Workshop Suite.exe` -> Launches the main launcher window
+3. Launch directly using either:
+   - `CV Workshop Suite.exe` -> Launches the main portal window
+   - `Launch Vision Suite.bat` -> Unified one-click runner
 
 ---
 
@@ -63,13 +61,16 @@ Best for contributors and developers extending the suite.
    git clone https://github.com/newton1306/Vision_OPH_KMUTT2026.git
    cd Vision_OPH_KMUTT2026
    ```
-2. Double-click either launcher script at the project root:
-   - `Launch_CV_Workshop.bat`
-   - `Launch_Fruit_Ninja.bat`
+2. Double-click the single launcher script at the project root:
+   - `Launch_Vision_Suite.bat`
+   Or run:
+   ```bash
+   npm start
+   ```
 
 > [!TIP]
 > **Automated Dependency Setup**  
-> On the first execution, the launcher automatically detects whether `node_modules` exists and runs `npm install` before starting the application.
+> On the first execution, `Launch_Vision_Suite.bat` automatically detects whether `node_modules` exists and runs `npm install` before starting the application.
 
 ---
 
@@ -124,18 +125,18 @@ A standalone 3D motion-tracking game designed as an interactive showcase of opti
 
 ```text
 Vision_OPH_KMUTT2026/
-|-- Launch_CV_Workshop.bat     # One-click launcher for CV Workshop
-|-- Launch_Fruit_Ninja.bat     # One-click launcher for Fruit Ninja
+|-- Launch_Vision_Suite.bat     # One-click unified launcher for Vision Suite
 |-- package.json               # Project manifest, dependencies, and build config
 |-- LICENSE                    # MIT Open Source License
 |-- README.md                  # Project documentation
 |-- build/
-|   |-- installer.nsh          # NSIS installer dual-shortcut script
+|   |-- installer.nsh          # NSIS installer single-shortcut script
 |   |-- icon.ico               # Application window icon
-|   |-- fruit_ninja.ico        # Fruit Ninja desktop shortcut icon
-|   `-- cv_workshop.ico        # CV Workshop desktop shortcut icon
+|   |-- fruit_ninja.ico        # Fruit Ninja icon
+|   `-- cv_workshop.ico        # CV Workshop icon
 |-- src/
 |   |-- main/                  # Electron main process & IPC handlers
+|   |-- menu/                  # Kiosk portal main menu & dynamic blur controller
 |   |-- cv_workshop/           # Blockly workspace, custom blocks, and vision HUD
 |   |-- fruit_ninja/           # Fruit Ninja 3D game logic, physics, and rendering
 |   `-- shared/                # MediaPipe offline WASM/models, audio synth, sprites
