@@ -31,7 +31,7 @@ Choose the deployment method that fits your environment:
 ### Option A: Prebuilt Windows Installer (Recommended)
 Best for classroom laptops, event staff, and instructors.
 
-1. Download the prebuilt installer (`CV Workshop Suite Setup 2.0.0.exe`) from GitHub Releases.
+1. Download the prebuilt installer (`CV.Workshop.Suite.Setup.2.0.0.exe`) from [GitHub Releases](https://github.com/newton1306/Vision_OPH_KMUTT2026/releases/tag/v2.0.0).
 2. Run the setup wizard.
 3. The installer creates a single unified shortcut on the Desktop and Start Menu:
    - **CV Workshop Suite** (launches directly into the fullscreen Kiosk Portal)
@@ -41,7 +41,7 @@ Best for classroom laptops, event staff, and instructors.
 ### Option B: Standalone Portable Package (Zero Installation)
 Best for computers with restricted administrative privileges or running from a USB drive.
 
-1. Download the portable zip archive from GitHub Releases.
+1. Download the portable zip archive (`CV-Workshop-Suite-2.0.0-win-x64-portable.zip`) from [GitHub Releases](https://github.com/newton1306/Vision_OPH_KMUTT2026/releases/tag/v2.0.0).
 2. Extract the archive to any target folder.
 3. Launch directly using either:
    - `CV Workshop Suite.exe` -> Launches the main portal window in kiosk mode
@@ -76,9 +76,24 @@ Best for contributors and developers extending the suite.
 
 ---
 
-## 3. Instructor Curriculum: CV Workshop Challenges
+## 3. Instructor Curriculum & Workshop Schedule
 
-The workshop features three progressive challenges designed for a 30-minute interactive session. Each challenge uses a **Dynamic Toolbox** that exposes only the blocks relevant to the active challenge, preventing cognitive overload and cross-session misuse:
+The workshop is designed as an intensive 30-minute interactive session structured into 6 sequential stages:
+
+### Workshop Schedule (30 Minutes Total)
+
+| Duration | Session Topic | Activity Description |
+| :--- | :--- | :--- |
+| **5 mins** | **First Game (Fruit Neptune)** | Hands-on optical motion slicing test on screen to establish immediate engagement and camera familiarity. |
+| **5 mins** | **Lecture + Demo** | Introduction to fundamental Computer Vision concepts and visual block command workflows. |
+| **5 mins** | **Challenge A: Animation & FX** | Attach dynamic visual effects and animations tracked to hand landmarks and fingertips. |
+| **5 mins** | **Challenge B: Detect Fingers** | Detect hand orientation, count upright fingers (1 to 5), and render numerical feedback on the HUD. |
+| **5 mins** | **Challenge C: Draw a Shape** | Mid-air geometric shape drawing with pinch gestures and test real-time AI shape classification. |
+| **5 mins** | **Wrap Up** | Real-world applications in industry (AI / Game Development) and reward distribution. |
+
+### Progressive Challenge Specifications
+
+Each challenge uses a **Dynamic Toolbox** that exposes only the blocks relevant to the active challenge, preventing cognitive overload and cross-session misuse:
 
 | Challenge | Objective | Core Learning Concepts | Key Gestures & Blocks |
 | :--- | :--- | :--- | :--- |
@@ -142,9 +157,11 @@ Vision_OPH_KMUTT2026/
 |   |-- icon.ico               # Application window icon
 |   |-- fruit_ninja.ico        # Fruit Ninja icon
 |   `-- cv_workshop.ico        # CV Workshop icon
+|-- image_source/
+|   `-- CV BG.png              # High-resolution kiosk portal backdrop image
 |-- src/
 |   |-- main/                  # Electron main process & IPC handlers
-|   |-- menu/                  # Kiosk portal main menu & dynamic blur controller
+|   |-- menu/                  # Kiosk portal main menu, dynamic blur & mecha HUD
 |   |-- cv_workshop/           # Blockly workspace, custom blocks, and vision HUD
 |   |-- fruit_ninja/           # Fruit Neptune 3D game logic, physics, and rendering
 |   `-- shared/                # MediaPipe offline WASM/models, audio synth, sprites
