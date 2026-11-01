@@ -11,29 +11,15 @@
     <!-- Mirrored Webcam video element for MediaPipe tracking -->
     <video id="webcam-video" playsinline muted autoplay></video>
 
-    <!-- Floating Top Navigation Bar: Back to Menu & Switch to CV Workshop -->
+    <!-- Floating Top Navigation Bar: Back to Menu -->
     <div id="top-nav-bar">
       <button id="btn-fruit-home" class="btn-fruit-nav" title="กลับหน้าหลัก (Main Menu)">
         <span class="nav-icon">🏠</span> หน้าหลัก
-      </button>
-      <button id="btn-fruit-workshop" class="btn-fruit-nav" title="ไปที่ CV Workshop">
-        <span class="nav-icon">🔬</span> CV Workshop
       </button>
     </div>
 
     <!-- Main Game Canvas (Renders full authentic Fruit Ninja experience) -->
     <canvas id="game-canvas"></canvas>
-
-    <!-- Subtle Camera Status & Controls Overlay -->
-    <div id="footer-status-bar">
-      <div class="status-pill">
-        <span id="cam-dot" class="cam-dot"></span>
-        <span id="cam-status">Starting Hand Tracking...</span>
-      </div>
-      <div class="shortcut-pill">
-        <span><kbd>ESC</kbd> กลับหน้าหลัก</span>
-      </div>
-    </div>
   </div>
 
   <!-- Local Offline Libraries & Scripts (100% Offline) -->

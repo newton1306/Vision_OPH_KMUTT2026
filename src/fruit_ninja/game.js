@@ -343,18 +343,6 @@ class FruitNinjaGame {
       });
     }
 
-    const btnWorkshop = document.getElementById('btn-fruit-workshop');
-    if (btnWorkshop) {
-      btnWorkshop.addEventListener('click', (e) => {
-        e.stopPropagation();
-        if (window.electronAPI && window.electronAPI.switchMode) {
-          window.electronAPI.switchMode('cv-workshop');
-        } else {
-          window.location.href = '../cv_workshop/index.html';
-        }
-      });
-    }
-
     // Mouse fallback support
     let isMouseDown = false;
     window.addEventListener('mousedown', (e) => {
@@ -450,13 +438,13 @@ class FruitNinjaGame {
           this.isHandActive = isDetected;
 
           if (isDetected) {
-            this.camDot.classList.add('active');
-            this.camStatus.textContent = 'Hand Active 🟢';
+            if (this.camDot) this.camDot.classList.add('active');
+            if (this.camStatus) this.camStatus.textContent = 'Hand Active 🟢';
             // Reset blade trail when a hand enters view so no streak slices across screen
             this.bladeTrail = [];
           } else {
-            this.camDot.classList.remove('active');
-            this.camStatus.textContent = 'Wave hand to play...';
+            if (this.camDot) this.camDot.classList.remove('active');
+            if (this.camStatus) this.camStatus.textContent = 'Wave hand to play...';
           }
         }
 
@@ -474,7 +462,7 @@ class FruitNinjaGame {
       await this.tracker.start();
     } catch (err) {
       console.warn('[FruitNinja] Camera start note:', err);
-      this.camStatus.textContent = 'Mouse Mode Active';
+      if (this.camStatus) this.camStatus.textContent = 'Mouse Mode Active';
     }
   }
 
