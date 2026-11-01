@@ -701,15 +701,6 @@ class CVWorkshopApp {
       });
     }
 
-    const btnNavFruit = document.getElementById('btn-nav-fruit');
-    if (btnNavFruit) {
-      btnNavFruit.addEventListener('click', () => {
-        if (window.electronAPI && window.electronAPI.switchMode) {
-          window.electronAPI.switchMode('fruit-ninja');
-        }
-      });
-    }
-
     // 7. Run / Stop Toggle
     this.btnRun.addEventListener('click', () => {
       SoundFX.init();

@@ -398,14 +398,6 @@ class FruitNinjaGame {
         return;
       }
 
-      if (e.key === 'f' || e.key === 'F') {
-        if (!document.fullscreenElement) {
-          document.documentElement.requestFullscreen().catch(() => {});
-        } else {
-          document.exitFullscreen().catch(() => {});
-        }
-      }
-
       if (e.key === 'r' || e.key === 'R') {
         this.startGame(this.currentDifficulty || 'medium');
       }
