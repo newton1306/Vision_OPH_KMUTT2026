@@ -378,8 +378,9 @@ class FruitNinjaGame {
 
     // Keyboard Shortcuts
     window.addEventListener('keydown', (e) => {
-      // Secret Admin Exit: Alt+B exits the program
-      if (e.altKey && (e.key === 'b' || e.key === 'B' || e.code === 'KeyB')) {
+      // Secret Admin Exit: Alt+B exits the program (supports physical KeyB and Thai layout)
+      const isKeyB = e.code === 'KeyB' || e.key === 'b' || e.key === 'B' || e.key === 'ิ' || e.key === 'ฺ';
+      if (e.altKey && isKeyB) {
         e.preventDefault();
         if (window.electronAPI && window.electronAPI.forceQuit) {
           window.electronAPI.forceQuit();

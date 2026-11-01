@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, session, globalShortcut } = require('electron');
+const { app, BrowserWindow, ipcMain, session, globalShortcut, screen } = require('electron');
 const path = require('path');
 
 let mainWindow = null;
@@ -15,8 +15,25 @@ function getTargetApp() {
   return 'menu';
 }
 
+function terminateApp() {
+  console.log('[SECURITY] Force terminating application immediately via Alt+B...');
+  isAllowQuit = true;
+  try {
+    globalShortcut.unregisterAll();
+  } catch (e) {}
+  if (mainWindow) {
+    try {
+      mainWindow.destroy();
+    } catch (e) {}
+    mainWindow = null;
+  }
+  app.exit(0);
+}
+
 function createWindow() {
   const targetApp = getTargetApp();
+  const primaryDisplay = screen.getPrimaryDisplay();
+  const { width, height } = primaryDisplay.bounds;
 
   // Automatically approve camera & media permissions
   session.defaultSession.setPermissionRequestHandler((webContents, permission, callback) => {
@@ -28,18 +45,14 @@ function createWindow() {
   });
 
   mainWindow = new BrowserWindow({
-    width: 1366,
-    height: 768,
-    minWidth: 1024,
-    minHeight: 600,
+    x: 0,
+    y: 0,
+    width: width,
+    height: height,
     fullscreen: true,
-    kiosk: true,              // Hardware kiosk mode: blocks OS chrome, F11, and taskbar
-    alwaysOnTop: true,        // Keeps window pinned above all other windows
-    skipTaskbar: true,        // Prevents taskbar thumbnailing and Win+D minimize
-    minimizable: false,       // Forbids minimizing by OS commands
-    closable: false,          // Forbids OS close buttons
-    resizable: false,         // Forbids resizing
-    movable: false,           // Forbids moving window
+    kiosk: true,              // Kiosk mode
+    alwaysOnTop: true,        // Keep on top of other windows
+    skipTaskbar: true,        // Hide from taskbar
     frame: false,
     autoHideMenuBar: true,
     backgroundColor: '#070a13',
@@ -53,6 +66,11 @@ function createWindow() {
     title: 'Vision OPH KMUTT 2026'
   });
 
+  // Force window to exact display bounds and ensure true fullscreen kiosk
+  mainWindow.setBounds({ x: 0, y: 0, width: width, height: height });
+  mainWindow.setFullScreen(true);
+  mainWindow.setKiosk(true);
+
   // Pin window at highest system z-order level ('screen-saver')
   try {
     mainWindow.setAlwaysOnTop(true, 'screen-saver', 1);
@@ -65,7 +83,7 @@ function createWindow() {
     console.log(`[RENDERER ${level}] ${message} (${sourceId}:${line})`);
   });
 
-  // Strict Kiosk Protection: prevent accidental close via Alt+F4 / taskbar / scripts
+  // Strict Kiosk Protection: prevent accidental close unless isAllowQuit is set
   mainWindow.on('close', (e) => {
     if (!isAllowQuit) {
       e.preventDefault();
@@ -78,6 +96,7 @@ function createWindow() {
     e.preventDefault();
     mainWindow.restore();
     mainWindow.setKiosk(true);
+    mainWindow.setFullScreen(true);
     mainWindow.setAlwaysOnTop(true, 'screen-saver', 1);
     mainWindow.focus();
   });
@@ -96,32 +115,48 @@ function createWindow() {
 
   // Intercept and swallow all escape / toggle / dev keystrokes before they reach renderer
   mainWindow.webContents.on('before-input-event', (event, input) => {
-    // Allow Alt+B for admin quit
-    if (input.alt && (input.key.toLowerCase() === 'b' || input.code === 'KeyB')) {
+    // Check Alt + B (support physical KeyB, uppercase, lowercase, and Thai layout 'ิ' / 'ฺ')
+    const isKeyB = (
+      input.code === 'KeyB' || 
+      (input.key && input.key.toLowerCase() === 'b') ||
+      input.key === 'ิ' ||
+      input.key === 'ฺ'
+    );
+
+    if (input.alt && isKeyB) {
+      event.preventDefault();
+      terminateApp();
       return;
     }
 
-    // Allow Alt+A for admin solution spawn in CV workshop
-    if (input.alt && (input.key.toLowerCase() === 'a' || input.code === 'KeyA')) {
-      return;
+    // Allow Alt+A for admin solution spawn in CV workshop (support English and Thai layout)
+    const isKeyA = (
+      input.code === 'KeyA' || 
+      (input.key && input.key.toLowerCase() === 'a') ||
+      input.key === 'ฟ' ||
+      input.key === 'ฤ'
+    );
+    if (input.alt && isKeyA) {
+      return; // Let Alt+A pass to renderer
     }
 
     // Block F11 (Fullscreen toggle)
-    if (input.key === 'F11') {
+    if (input.key === 'F11' || input.code === 'F11') {
       event.preventDefault();
       return;
     }
 
     // Block F12, DevTools (Ctrl+Shift+I), Reload (Ctrl+R / F5)
-    if (input.key === 'F12' || input.key === 'F5' || 
-        (input.control && input.shift && input.key.toLowerCase() === 'i') ||
-        (input.control && input.key.toLowerCase() === 'r')) {
+    if (input.key === 'F12' || input.code === 'F12' || 
+        input.key === 'F5' || input.code === 'F5' ||
+        (input.control && input.shift && (input.key.toLowerCase() === 'i' || input.code === 'KeyI')) ||
+        (input.control && (input.key.toLowerCase() === 'r' || input.code === 'KeyR'))) {
       event.preventDefault();
       return;
     }
 
     // Block Alt+F4, Alt+Space, Alt+Tab
-    if (input.alt && (input.key === 'F4' || input.key === ' ' || input.key === 'Tab')) {
+    if (input.alt && (input.key === 'F4' || input.code === 'F4' || input.key === ' ' || input.code === 'Space' || input.key === 'Tab' || input.code === 'Tab')) {
       event.preventDefault();
       return;
     }
@@ -144,7 +179,6 @@ function createWindow() {
 // IPC Handlers
 ipcMain.on('app:toggle-fullscreen', () => {
   if (mainWindow) {
-    // Maintain kiosk fullscreen always
     mainWindow.setKiosk(true);
     mainWindow.setFullScreen(true);
   }
@@ -156,20 +190,13 @@ ipcMain.on('app:reload', () => {
   }
 });
 
-// Normal quit is blocked unless isAllowQuit is flagged
+// Both quit and force-quit trigger immediate termination
 ipcMain.on('app:quit', () => {
-  if (isAllowQuit) {
-    app.quit();
-  } else {
-    console.log('[SECURITY] App quit request ignored without admin override (Alt+B).');
-  }
+  terminateApp();
 });
 
-// Explicit Admin Force Quit via Alt+B
 ipcMain.on('app:force-quit', () => {
-  console.log('[ADMIN] Force quit triggered via Alt+B.');
-  isAllowQuit = true;
-  app.quit();
+  terminateApp();
 });
 
 ipcMain.on('app:switch-mode', (event, appName) => {
@@ -192,14 +219,9 @@ app.whenReady().then(() => {
 
   // Global Admin Shortcut: Alt+B strictly exits the kiosk
   try {
-    const registered = globalShortcut.register('Alt+B', () => {
-      console.log('[GLOBAL SHORTCUT] Alt+B pressed, exiting application...');
-      isAllowQuit = true;
-      app.quit();
+    globalShortcut.register('Alt+B', () => {
+      terminateApp();
     });
-    if (registered) {
-      console.log('[SECURITY] Global Alt+B shortcut registered successfully.');
-    }
   } catch (err) {
     console.error('[SECURITY] Failed to register Alt+B global shortcut:', err);
   }
@@ -224,8 +246,7 @@ app.whenReady().then(() => {
   if (process.argv.includes('--test-smoke')) {
     console.log('[SMOKE TEST] Electron window created and initialized successfully!');
     setTimeout(() => {
-      isAllowQuit = true;
-      app.quit();
+      terminateApp();
     }, 1500);
   }
 
@@ -241,7 +262,7 @@ app.on('will-quit', () => {
 });
 
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin' && isAllowQuit) {
-    app.quit();
+  if (process.platform !== 'darwin') {
+    terminateApp();
   }
 });
