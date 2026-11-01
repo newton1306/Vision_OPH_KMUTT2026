@@ -330,6 +330,31 @@ class FruitNinjaGame {
   }
 
   initEvents() {
+    // Navigation bar buttons (Home & CV Workshop)
+    const btnHome = document.getElementById('btn-fruit-home');
+    if (btnHome) {
+      btnHome.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (window.electronAPI && window.electronAPI.switchMode) {
+          window.electronAPI.switchMode('menu');
+        } else {
+          window.location.href = '../menu/index.html';
+        }
+      });
+    }
+
+    const btnWorkshop = document.getElementById('btn-fruit-workshop');
+    if (btnWorkshop) {
+      btnWorkshop.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (window.electronAPI && window.electronAPI.switchMode) {
+          window.electronAPI.switchMode('cv-workshop');
+        } else {
+          window.location.href = '../cv_workshop/index.html';
+        }
+      });
+    }
+
     // Mouse fallback support
     let isMouseDown = false;
     window.addEventListener('mousedown', (e) => {
@@ -353,22 +378,24 @@ class FruitNinjaGame {
 
     // Keyboard Shortcuts
     window.addEventListener('keydown', (e) => {
-      // ESC key immediately quits the game
-      if (e.key === 'Escape') {
-        if (window.electronAPI && window.electronAPI.quit) {
-          window.electronAPI.quit();
-        } else if (window.ipcRenderer) {
-          window.ipcRenderer.send('app:quit');
-        } else if (typeof require !== 'undefined') {
-          try {
-            const { ipcRenderer } = require('electron');
-            ipcRenderer.send('app:quit');
-          } catch (err) {
-            window.close();
-          }
-        } else {
-          window.close();
+      // Secret Admin Exit: Alt+B exits the program
+      if (e.altKey && (e.key === 'b' || e.key === 'B' || e.code === 'KeyB')) {
+        e.preventDefault();
+        if (window.electronAPI && window.electronAPI.forceQuit) {
+          window.electronAPI.forceQuit();
         }
+        return;
+      }
+
+      // ESC key returns to Main Menu
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        if (window.electronAPI && window.electronAPI.switchMode) {
+          window.electronAPI.switchMode('menu');
+        } else {
+          window.location.href = '../menu/index.html';
+        }
+        return;
       }
 
       if (e.key === 'f' || e.key === 'F') {
@@ -383,7 +410,7 @@ class FruitNinjaGame {
         this.startGame(this.currentDifficulty || 'medium');
       }
 
-      if (e.key === 'Backspace' || e.key === 'b' || e.key === 'B') {
+      if ((e.key === 'Backspace' || e.key === 'b' || e.key === 'B') && !e.altKey) {
         if (this.gameState === 'SELECT_MODE' || this.gameState === 'GAME_OVER') {
           this.gameState = 'MENU';
         }

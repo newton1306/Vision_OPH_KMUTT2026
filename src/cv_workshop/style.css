@@ -43,6 +43,43 @@ body, html {
   gap: 12px;
 }
 
+/* Navigation Buttons: Back to Menu & Switch App */
+.nav-button-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-nav-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #f8fafc;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-nav-action:hover {
+  background: rgba(255, 255, 255, 0.22);
+  transform: translateY(-1px);
+}
+
+.btn-nav-home:hover {
+  border-color: #38bdf8;
+  color: #38bdf8;
+}
+
+.btn-nav-game:hover {
+  border-color: #f87171;
+  color: #fca5a5;
+}
+
 /* MakeCode Pill Switcher: [🧩 Blocks] [📄 JavaScript ▾] */
 .pill-switcher {
   display: flex;

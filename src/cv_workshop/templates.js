@@ -58,7 +58,7 @@ const WorkshopTemplates = {
 
 // Full Working Solutions for CV Workshop Challenges (Triggered secretly by Alt+A)
 const WorkshopSolutions = {
-  // Challenge A Solution: Iron Man Palm Repulsor
+  // Challenge A Solution: Iron Man Palm Repulsor with Multi-finger attachments & Banner
   challengeA: `<xml xmlns="https://developers.google.com/blockly/xml">
   <block type="controls_if" x="240" y="50">
     <value name="IF0">
@@ -81,54 +81,38 @@ const WorkshopSolutions = {
         <field name="SPRITE">ironman</field>
         <field name="TARGET">palm</field>
         <next>
-          <block type="ai_print_text">
-            <value name="TEXT">
-              <block type="text">
-                <field name="TEXT">💥 JARVIS: MARK-85 ARC REPULSOR ACTIVE!</field>
+          <block type="ai_attach_sprite">
+            <field name="SPRITE">magic_circle</field>
+            <field name="TARGET">index</field>
+            <next>
+              <block type="ai_attach_sprite">
+                <field name="SPRITE">rasengan</field>
+                <field name="TARGET">pinky</field>
+                <next>
+                  <block type="ai_attach_sprite">
+                    <field name="SPRITE">magic_circle</field>
+                    <field name="TARGET">thumb</field>
+                    <next>
+                      <block type="ai_print_text">
+                        <value name="TEXT">
+                          <block type="text">
+                            <field name="TEXT">💥 Computer Vision II</field>
+                          </block>
+                        </value>
+                      </block>
+                    </next>
+                  </block>
+                </next>
               </block>
-            </value>
+            </next>
           </block>
         </next>
       </block>
     </statement>
-    <next>
-      <block type="controls_if">
-        <value name="IF0">
-          <block type="logic_compare">
-            <field name="OP">EQ</field>
-            <value name="A">
-              <block type="ai_sensor">
-                <field name="FEATURE">fingers</field>
-              </block>
-            </value>
-            <value name="B">
-              <block type="math_number">
-                <field name="NUM">0</field>
-              </block>
-            </value>
-          </block>
-        </value>
-        <statement name="DO0">
-          <block type="ai_attach_sprite">
-            <field name="SPRITE">ironman</field>
-            <field name="TARGET">palm</field>
-            <next>
-              <block type="ai_print_text">
-                <value name="TEXT">
-                  <block type="text">
-                    <field name="TEXT">💥 REPULSOR CHARGING: 100%!</field>
-                  </block>
-                </value>
-              </block>
-            </next>
-          </block>
-        </statement>
-      </block>
-    </next>
   </block>
 </xml>`,
 
-  // Challenge B Solution: Finger Counter
+  // Challenge B Solution: 5-Finger Detection (1 to 5)
   challengeB: `<xml xmlns="https://developers.google.com/blockly/xml">
   <block type="controls_if" x="240" y="50">
     <value name="IF0">
@@ -150,7 +134,7 @@ const WorkshopSolutions = {
       <block type="ai_print_text">
         <value name="TEXT">
           <block type="text">
-            <field name="TEXT">👆 1 Finger Detected</field>
+            <field name="TEXT">1 Finger Detected</field>
           </block>
         </value>
       </block>
@@ -176,7 +160,7 @@ const WorkshopSolutions = {
           <block type="ai_print_text">
             <value name="TEXT">
               <block type="text">
-                <field name="TEXT">✌️ Peace / 2 Fingers!</field>
+                <field name="TEXT">2 Fingers Detected</field>
               </block>
             </value>
           </block>
@@ -193,7 +177,7 @@ const WorkshopSolutions = {
                 </value>
                 <value name="B">
                   <block type="math_number">
-                    <field name="NUM">5</field>
+                    <field name="NUM">3</field>
                   </block>
                 </value>
               </block>
@@ -202,11 +186,67 @@ const WorkshopSolutions = {
               <block type="ai_print_text">
                 <value name="TEXT">
                   <block type="text">
-                    <field name="TEXT">🖐️ High Five! (5 Fingers)</field>
+                    <field name="TEXT">3 Fingers Detected</field>
                   </block>
                 </value>
               </block>
             </statement>
+            <next>
+              <block type="controls_if">
+                <value name="IF0">
+                  <block type="logic_compare">
+                    <field name="OP">EQ</field>
+                    <value name="A">
+                      <block type="ai_sensor">
+                        <field name="FEATURE">fingers</field>
+                      </block>
+                    </value>
+                    <value name="B">
+                      <block type="math_number">
+                        <field name="NUM">4</field>
+                      </block>
+                    </value>
+                  </block>
+                </value>
+                <statement name="DO0">
+                  <block type="ai_print_text">
+                    <value name="TEXT">
+                      <block type="text">
+                        <field name="TEXT">4 Fingers Detected</field>
+                      </block>
+                    </value>
+                  </block>
+                </statement>
+                <next>
+                  <block type="controls_if">
+                    <value name="IF0">
+                      <block type="logic_compare">
+                        <field name="OP">EQ</field>
+                        <value name="A">
+                          <block type="ai_sensor">
+                            <field name="FEATURE">fingers</field>
+                          </block>
+                        </value>
+                        <value name="B">
+                          <block type="math_number">
+                            <field name="NUM">5</field>
+                          </block>
+                        </value>
+                      </block>
+                    </value>
+                    <statement name="DO0">
+                      <block type="ai_print_text">
+                        <value name="TEXT">
+                          <block type="text">
+                            <field name="TEXT">5 Fingers Detected</field>
+                          </block>
+                        </value>
+                      </block>
+                    </statement>
+                  </block>
+                </next>
+              </block>
+            </next>
           </block>
         </next>
       </block>
@@ -214,7 +254,7 @@ const WorkshopSolutions = {
   </block>
 </xml>`,
 
-  // Challenge C Solution: Draw a Shape & Predict
+  // Challenge C Solution: Draw a Shape & Predict (Pinch ON + Circle, Triangle, Square)
   challengeC: `<xml xmlns="https://developers.google.com/blockly/xml">
   <block type="ai_draw_trail" x="240" y="40">
     <field name="STATE">true</field>
@@ -242,11 +282,6 @@ const WorkshopSolutions = {
                 <field name="TEXT">⭕ Great Circle Detected!</field>
               </block>
             </value>
-            <next>
-              <block type="ai_play_sound">
-                <field name="SOUND">combo</field>
-              </block>
-            </next>
           </block>
         </statement>
         <next>
@@ -273,11 +308,6 @@ const WorkshopSolutions = {
                     <field name="TEXT">🔺 Triangle Detected!</field>
                   </block>
                 </value>
-                <next>
-                  <block type="ai_play_sound">
-                    <field name="SOUND">splat</field>
-                  </block>
-                </next>
               </block>
             </statement>
             <next>
@@ -304,11 +334,6 @@ const WorkshopSolutions = {
                         <field name="TEXT">🟩 Square Detected!</field>
                       </block>
                     </value>
-                    <next>
-                      <block type="ai_play_sound">
-                        <field name="SOUND">swish</field>
-                      </block>
-                    </next>
                   </block>
                 </statement>
               </block>

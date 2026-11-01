@@ -1,10 +1,11 @@
 {
   "name": "vision-workshop-suite",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "description": "Offline Computer Vision Mini Workshop & Fruit Ninja Game Suite",
   "main": "src/main/main.js",
   "scripts": {
     "start": "electron .",
+    "start:menu": "electron . --app=menu",
     "start:fruit": "electron . --app=fruit-ninja",
     "start:workshop": "electron . --app=cv-workshop",
     "build:ico": "node scripts/make_ico.js",

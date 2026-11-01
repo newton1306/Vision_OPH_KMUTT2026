@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vision Workshop Suite - KMUTT Open House 2026</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Fullscreen Background Image -->
+  <div id="bg-wrapper">
+    <img id="bg-img" src="assets/cv_bg.png" alt="Vision OPH Background">
+  </div>
+
+  <!-- Initial Idle Hint (Fades out when mouse moves) -->
+  <div id="idle-prompt">
+    <div class="prompt-pill">
+      <span class="prompt-icon">👆</span>
+      <span class="prompt-text">ขยับเมาส์เพื่อเริ่มต้น / Move Mouse to Enter</span>
+    </div>
+  </div>
+
+  <!-- Main Menu Overlay (Fades in when background blurs) -->
+  <main id="menu-container">
+    <header class="menu-header">
+      <div class="event-badge">KMUTT OPEN HOUSE 2026</div>
+      <h1 class="main-title">VISION WORKSHOP SUITE</h1>
+      <p class="subtitle">Computer Vision & Interactive AI Motion Experience</p>
+    </header>
+
+    <!-- 2 Rounded Square Cards in Center -->
+    <div class="cards-grid">
+      <!-- Card 1: Fruit Neptune -->
+      <button class="menu-card fruit-card" data-app="fruit-ninja" tabindex="1">
+        <div class="card-glow"></div>
+        <div class="card-icon-box">
+          <img src="assets/fruit_logo.png" alt="Fruit Neptune Logo" class="card-logo fruit-logo">
+        </div>
+        <div class="card-content">
+          <h2 class="card-title">Fruit Neptune</h2>
+          <p class="card-desc">3D Motion Slicing Game</p>
+          <span class="card-action">เข้าเล่นเกม ➜</span>
+        </div>
+      </button>
+
+      <!-- Card 2: CV Workshop -->
+      <button class="menu-card cv-card" data-app="cv-workshop" tabindex="2">
+        <div class="card-glow"></div>
+        <div class="card-icon-box">
+          <svg class="card-logo cv-logo" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="32" cy="32" r="30" stroke="#38bdf8" stroke-width="2.5" fill="#0f172a" fill-opacity="0.85"/>
+            <circle cx="32" cy="32" r="22" stroke="#818cf8" stroke-width="1.5" stroke-dasharray="4 2"/>
+            <!-- AI Eye / Lens -->
+            <ellipse cx="32" cy="32" rx="16" ry="10" stroke="#00f0ff" stroke-width="2"/>
+            <circle cx="32" cy="32" r="6" fill="#38bdf8"/>
+            <circle cx="34" cy="30" r="2" fill="#ffffff"/>
+            <!-- Arc Pulse Beams -->
+            <path d="M12 32 H4 M60 32 H52 M32 12 V4 M32 60 V52" stroke="#38bdf8" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="card-content">
+          <h2 class="card-title">CV Workshop</h2>
+          <p class="card-desc">AI Block Coding Studio</p>
+          <span class="card-action">เข้าสู่ห้องทดลอง ➜</span>
+        </div>
+      </button>
+    </div>
+
+    <!-- Security & Administrative Footer -->
+    <footer class="menu-footer">
+      <div class="admin-pill">
+        <span class="lock-icon">🔒</span>
+        <span>Kiosk Protection Active • กด <kbd>Alt</kbd> + <kbd>B</kbd> เพื่อออกจากโปรแกรม</span>
+      </div>
+    </footer>
+  </main>
+
+  <script src="menu.js"></script>
+</body>
+</html>

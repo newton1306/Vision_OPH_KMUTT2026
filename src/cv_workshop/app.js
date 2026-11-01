@@ -691,7 +691,26 @@ class CVWorkshopApp {
       });
     }
 
-    // 6. Run / Stop Toggle
+    // 6. Navigation Buttons: Back to Menu & Switch to Fruit Neptune
+    const btnNavMenu = document.getElementById('btn-nav-menu');
+    if (btnNavMenu) {
+      btnNavMenu.addEventListener('click', () => {
+        if (window.electronAPI && window.electronAPI.switchMode) {
+          window.electronAPI.switchMode('menu');
+        }
+      });
+    }
+
+    const btnNavFruit = document.getElementById('btn-nav-fruit');
+    if (btnNavFruit) {
+      btnNavFruit.addEventListener('click', () => {
+        if (window.electronAPI && window.electronAPI.switchMode) {
+          window.electronAPI.switchMode('fruit-ninja');
+        }
+      });
+    }
+
+    // 7. Run / Stop Toggle
     this.btnRun.addEventListener('click', () => {
       SoundFX.init();
       this.isRunning = !this.isRunning;
@@ -723,6 +742,15 @@ class CVWorkshopApp {
     });
 
     window.addEventListener('keydown', (e) => {
+      // Secret Admin Exit: Alt+B exits the program
+      if (e.altKey && (e.key === 'b' || e.key === 'B' || e.code === 'KeyB')) {
+        e.preventDefault();
+        if (window.electronAPI && window.electronAPI.forceQuit) {
+          window.electronAPI.forceQuit();
+        }
+        return;
+      }
+
       // Secret Admin Shortcut: Alt+A silently spawns the correct solution onto active challenge workspace
       if (e.altKey && (e.key === 'a' || e.key === 'A' || e.code === 'KeyA')) {
         const target = e.target;
