@@ -43,7 +43,8 @@ const requiredOfflineFiles = [
   'build/icon.ico',
   'build/fruit_ninja.ico',
   'build/cv_workshop.ico',
-  'build/installer.nsh'
+  'build/installer.nsh',
+  'src/main/kiosk-guard.exe'
 ];
 
 requiredOfflineFiles.forEach(relPath => {

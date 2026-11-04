@@ -1,8 +1,45 @@
 const { app, BrowserWindow, ipcMain, session, globalShortcut, screen } = require('electron');
 const path = require('path');
+const fs = require('fs');
+const { spawn } = require('child_process');
 
 let mainWindow = null;
 let isAllowQuit = false;
+let guardProcess = null;
+
+function startKioskGuard() {
+  if (process.platform !== 'win32') return;
+
+  const guardPath = path.join(__dirname, 'kiosk-guard.exe');
+  if (fs.existsSync(guardPath)) {
+    try {
+      guardProcess = spawn(guardPath, [process.pid.toString()], {
+        detached: false,
+        stdio: 'ignore',
+        windowsHide: true
+      });
+
+      guardProcess.on('error', (err) => {
+        console.warn('[SECURITY] Failed to spawn kiosk-guard:', err.message);
+      });
+
+      console.log('[SECURITY] Low-level OS kiosk guard active (PID:', guardProcess.pid, ')');
+    } catch (e) {
+      console.warn('[SECURITY] Kiosk guard launch exception:', e.message);
+    }
+  } else {
+    console.warn('[SECURITY] kiosk-guard.exe not found at', guardPath);
+  }
+}
+
+function stopKioskGuard() {
+  if (guardProcess) {
+    try {
+      guardProcess.kill();
+    } catch (_) {}
+    guardProcess = null;
+  }
+}
 
 // Determine target app from command line arguments
 // e.g. --app=fruit-ninja, --app=cv-workshop, or --app=menu (default)
@@ -18,6 +55,7 @@ function getTargetApp() {
 function terminateApp() {
   console.log('[SECURITY] Force terminating application immediately via Alt+B...');
   isAllowQuit = true;
+  stopKioskGuard();
   try {
     globalShortcut.unregisterAll();
   } catch (e) {}
@@ -70,6 +108,9 @@ function createWindow() {
   mainWindow.setBounds({ x: 0, y: 0, width: width, height: height });
   mainWindow.setFullScreen(true);
   mainWindow.setKiosk(true);
+
+  // Start low-level OS keyboard guard (blocks Windows Key, Alt+Tab, Tab, Ctrl+Esc)
+  startKioskGuard();
 
   // Pin window at highest system z-order level ('screen-saver')
   try {
@@ -138,6 +179,18 @@ function createWindow() {
     );
     if (input.alt && isKeyA) {
       return; // Let Alt+A pass to renderer
+    }
+
+    // Block Tab key entirely (plain Tab, Shift+Tab, Ctrl+Tab, Alt+Tab)
+    if (input.key === 'Tab' || input.code === 'Tab') {
+      event.preventDefault();
+      return;
+    }
+
+    // Block Windows Key (Meta, OS, Super, Win+...)
+    if (input.meta || input.key === 'Meta' || input.code === 'MetaLeft' || input.code === 'MetaRight' || input.key === 'OS') {
+      event.preventDefault();
+      return;
     }
 
     // Block F11 (Fullscreen toggle)
@@ -258,6 +311,7 @@ app.whenReady().then(() => {
 });
 
 app.on('will-quit', () => {
+  stopKioskGuard();
   globalShortcut.unregisterAll();
 });
 

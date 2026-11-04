@@ -4,12 +4,13 @@
   "description": "Offline Computer Vision Mini Workshop & Fruit Ninja Game Suite",
   "main": "src/main/main.js",
   "scripts": {
-    "start": "electron .",
-    "start:menu": "electron . --app=menu",
-    "start:fruit": "electron . --app=fruit-ninja",
-    "start:workshop": "electron . --app=cv-workshop",
+    "build:guard": "node scripts/build_kiosk_guard.js",
+    "start": "node scripts/build_kiosk_guard.js && electron .",
+    "start:menu": "node scripts/build_kiosk_guard.js && electron . --app=menu",
+    "start:fruit": "node scripts/build_kiosk_guard.js && electron . --app=fruit-ninja",
+    "start:workshop": "node scripts/build_kiosk_guard.js && electron . --app=cv-workshop",
     "build:ico": "node scripts/make_ico.js",
-    "dist": "electron-builder --win --x64"
+    "dist": "node scripts/build_kiosk_guard.js && electron-builder --win --x64"
   },
   "build": {
     "appId": "com.cvworkshop.suite",
