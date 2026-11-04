@@ -3,7 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Platform: Windows x64](https://img.shields.io/badge/Platform-Windows_10%2F11_x64-0078D6.svg)](https://github.com/newton1306/Vision_OPH_KMUTT2026/releases)
 [![Offline: 100% Zero-CDN](https://img.shields.io/badge/Offline-100%25_Zero--CDN-green.svg)](scripts/verify_files.js)
-[![Release: v2.0.0](https://img.shields.io/badge/Release-v2.0.0-orange.svg)](https://github.com/newton1306/Vision_OPH_KMUTT2026/releases/tag/v2.0.0)
+[![Release: v2.0.1](https://img.shields.io/badge/Release-v2.0.1-orange.svg)](https://github.com/newton1306/Vision_OPH_KMUTT2026/releases/tag/v2.0.1)
 
 ---
 
@@ -13,7 +13,7 @@
 
 The suite integrates two core interactive modules into a unified, secure kiosk environment:
 
-- **Computer Vision Mini Workshop:** An interactive visual block programming environment built with Google Blockly and Google MediaPipe Hands. Features continuous real-time execution without run/stop clutter, automatic block validation, and instant session reset via `Alt + V`. Students write logic to detect hand landmarks, track upright finger states, attach AR visual effects, log coordinate trajectories, and classify geometric shapes in real time.
+- **Computer Vision Mini Workshop:** An interactive visual block programming environment built with Google Blockly and Google MediaPipe Hands. Features continuous real-time execution without run/stop button clutter, centered Challenge A, B, and C navigation, automatic block validation, and instant session reset via `Alt + V`. Students write logic to detect hand landmarks, track upright finger states, attach AR visual effects, log coordinate trajectories, and classify geometric shapes in real time.
 - **Fruit Neptune (Motion AR Slicing):** A full 3D motion-controlled recreation of the classic arcade fruit slicing game running on Three.js, tracking fingertip velocity vectors to generate luminous blade trails and handle real-time fruit slicing physics. Operates purely through optical hand tracking (mouse is reserved for UI buttons), with navigation controls consolidated at the bottom-left corner for an unobstructed slicing area.
 
 The suite launches through an interactive **Kiosk Portal** featuring dynamic background depth blur and high-tech tactical selection modules, guarded by strict kiosk lockdown policies to prevent accidental desktop exposure during live exhibition events.
@@ -31,7 +31,7 @@ Choose the deployment method that fits your environment:
 ### Option A: Prebuilt Windows Installer (Recommended)
 Best for classroom laptops, event staff, and instructors.
 
-1. Download the prebuilt installer (`CV.Workshop.Suite.Setup.2.0.0.exe`) from [GitHub Releases](https://github.com/newton1306/Vision_OPH_KMUTT2026/releases/tag/v2.0.0).
+1. Download the prebuilt installer (`CV.Workshop.Suite.Setup.2.0.1.exe`) from [GitHub Releases](https://github.com/newton1306/Vision_OPH_KMUTT2026/releases/tag/v2.0.1).
 2. Run the setup wizard.
 3. The installer creates a single unified shortcut on the Desktop and Start Menu:
    - **CV Workshop Suite** (launches directly into the fullscreen Kiosk Portal)
@@ -41,7 +41,7 @@ Best for classroom laptops, event staff, and instructors.
 ### Option B: Standalone Portable Package (Zero Installation)
 Best for computers with restricted administrative privileges or running from a USB drive.
 
-1. Download the portable zip archive (`CV-Workshop-Suite-2.0.0-win-x64-portable.zip`) from [GitHub Releases](https://github.com/newton1306/Vision_OPH_KMUTT2026/releases/tag/v2.0.0).
+1. Download the portable zip archive (`CV-Workshop-Suite-2.0.1-win-x64-portable.zip`) from [GitHub Releases](https://github.com/newton1306/Vision_OPH_KMUTT2026/releases/tag/v2.0.1).
 2. Extract the archive to any target folder.
 3. Launch directly using either:
    - `CV Workshop Suite.exe` -> Launches the main portal window in kiosk mode

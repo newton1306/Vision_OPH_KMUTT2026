@@ -1,6 +1,6 @@
 {
   "name": "vision-workshop-suite",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Offline Computer Vision Mini Workshop & Fruit Ninja Game Suite",
   "main": "src/main/main.js",
   "scripts": {
