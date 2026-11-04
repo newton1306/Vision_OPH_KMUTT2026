@@ -13,8 +13,8 @@
 
 The suite integrates two core interactive modules into a unified, secure kiosk environment:
 
-- **Computer Vision Mini Workshop:** An interactive visual block programming environment built with Google Blockly and Google MediaPipe Hands. Students write logic to detect hand landmarks, track upright finger states, attach AR visual effects, log coordinate trajectories, and classify geometric shapes in real time.
-- **Fruit Neptune (Motion AR Slicing):** A full 3D motion-controlled recreation of the classic arcade fruit slicing game running on Three.js, tracking fingertip velocity vectors to generate luminous blade trails and handle real-time fruit slicing physics.
+- **Computer Vision Mini Workshop:** An interactive visual block programming environment built with Google Blockly and Google MediaPipe Hands. Features continuous real-time execution without run/stop clutter, automatic block validation, and instant session reset via `Alt + V`. Students write logic to detect hand landmarks, track upright finger states, attach AR visual effects, log coordinate trajectories, and classify geometric shapes in real time.
+- **Fruit Neptune (Motion AR Slicing):** A full 3D motion-controlled recreation of the classic arcade fruit slicing game running on Three.js, tracking fingertip velocity vectors to generate luminous blade trails and handle real-time fruit slicing physics. Operates purely through optical hand tracking (mouse is reserved for UI buttons), with navigation controls consolidated at the bottom-left corner for an unobstructed slicing area.
 
 The suite launches through an interactive **Kiosk Portal** featuring dynamic background depth blur and high-tech tactical selection modules, guarded by strict kiosk lockdown policies to prevent accidental desktop exposure during live exhibition events.
 
@@ -129,11 +129,13 @@ To ensure an uninterrupted experience during open house exhibitions, the suite i
 A standalone 3D motion-tracking game designed as an interactive showcase of optical computer vision capabilities:
 
 - **Physics & Motion Engine:** Analyzes real-time 3D velocity vectors of the user's index fingertip to generate dynamic blade trails and evaluate collision planes with launched fruit meshes.
-- **Streamlined Navigation:** Features a clean top navigation bar with a dedicated Main Menu button to return to the Kiosk Portal at any time.
+- **Pure Optical Hand Tracking:** Blade slicing requires physical hand gestures in front of the webcam. Mouse input is strictly reserved for clicking UI buttons (Pause, Main Menu), preventing attendees from bypassing optical vision mechanics.
+- **Streamlined Navigation:** Navigation and pause buttons are positioned neatly at the bottom-left corner of the display, keeping the main arena completely free for fruit slicing.
 - **Available Game Modes:**
-  - **Classic Mode:** Traditional 3 Strikes system featuring surprise bombs and slice-to-start watermelon entry.
-  - **Zen Mode:** 90-second score-attack mode with continuous fruit spawns and zero bombs.
-  - **Blade Master Mode:** High-velocity challenge mode testing reflex speed and hand accuracy.
+  - **Easy Mode:** Casual fruit slicing without bomb hazards.
+  - **Medium Mode:** Classic 5 strikes system featuring occasional bomb hazards and slice-to-start watermelon entry.
+  - **Hard Mode:** Fast-paced high-velocity challenge mode testing reflex speed and hand accuracy.
+  - **Emotional Damage Mode:** High-intensity chaos mode with 10 strikes and maximum fruit density.
 
 ---
 
@@ -164,12 +166,16 @@ Vision_OPH_KMUTT2026/
 |-- image_source/
 |   `-- CV BG.png              # High-resolution kiosk portal backdrop image
 |-- src/
-|   |-- main/                  # Electron main process & IPC handlers
+|   |-- main/                  # Electron main process, kiosk lockdown & OS hook
+|   |   |-- main.js            # Kiosk lifecycle, IPC, and security management
+|   |   |-- kiosk_guard.cs     # Low-level Win32 keyboard hook source
+|   |   `-- kiosk-guard.exe    # Compiled OS keyboard driver-level interceptor
 |   |-- menu/                  # Kiosk portal main menu, dynamic blur & mecha HUD
 |   |-- cv_workshop/           # Blockly workspace, custom blocks, and vision HUD
 |   |-- fruit_ninja/           # Fruit Neptune 3D game logic, physics, and rendering
 |   `-- shared/                # MediaPipe offline WASM/models, audio synth, sprites
 `-- scripts/
+    |-- build_kiosk_guard.js   # Native C# compiler automation script
     `-- verify_files.js        # Offline asset integrity and syntax verification
 ```
 
