@@ -181,8 +181,8 @@ class FruitNinjaGame {
     this.gameOverEnterTime = 0;
     this.gameOverCooldown = 750;
 
-    // Pause button coordinates
-    this.pauseBtn = { x: 36, y: 0, width: 48, height: 48 };
+    // Pause button coordinates (Positioned beside the bottom-left Home button)
+    this.pauseBtn = { x: 164, y: 0, width: 44, height: 38 };
 
     window.fruitGame = this;
 
@@ -288,7 +288,10 @@ class FruitNinjaGame {
       this.canvas.height = window.innerHeight;
       this.menuWatermelon.x = this.canvas.width * 0.545;
       this.menuWatermelon.y = this.canvas.height * 0.54;
-      this.pauseBtn.y = this.canvas.height - 68;
+      this.pauseBtn.x = 164;
+      this.pauseBtn.y = this.canvas.height - 62;
+      this.pauseBtn.width = 44;
+      this.pauseBtn.height = 38;
 
       if (this.modeFruits) {
         const W = this.canvas.width;
@@ -343,26 +346,10 @@ class FruitNinjaGame {
       });
     }
 
-    // Mouse fallback support
-    let isMouseDown = false;
+    // Mouse interactions: Click only (Mouse cannot be used as a blade / sword)
     window.addEventListener('mousedown', (e) => {
-      isMouseDown = true;
       this.checkPauseClick(e.clientX, e.clientY);
-      this.addBladePoint(e.clientX, e.clientY);
     });
-    window.addEventListener('mouseup', () => { isMouseDown = false; });
-    window.addEventListener('mousemove', (e) => {
-      if (!this.isHandActive || isMouseDown) {
-        this.addBladePoint(e.clientX, e.clientY);
-      }
-    });
-
-    // Touch support
-    window.addEventListener('touchmove', (e) => {
-      if (e.touches && e.touches[0]) {
-        this.addBladePoint(e.touches[0].clientX, e.touches[0].clientY);
-      }
-    }, { passive: true });
 
     // Keyboard Shortcuts
     window.addEventListener('keydown', (e) => {
@@ -404,7 +391,7 @@ class FruitNinjaGame {
   }
 
   checkPauseClick(x, y) {
-    if (this.gameState === 'PLAYING') {
+    if (this.gameState === 'PLAYING' || this.gameState === 'PAUSED') {
       const b = this.pauseBtn;
       if (x >= b.x && x <= b.x + b.width && y >= b.y && y <= b.y + b.height) {
         this.togglePause();
@@ -1572,18 +1559,18 @@ class FruitNinjaGame {
     // 3. Bottom-Left: Pause Button
     const b = this.pauseBtn;
     this.ctx.save();
-    this.ctx.fillStyle = 'rgba(15, 23, 42, 0.75)';
-    this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
-    this.ctx.lineWidth = 2;
+    this.ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+    this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
+    this.ctx.lineWidth = 1.5;
     this.ctx.beginPath();
-    this.ctx.roundRect(b.x, b.y, b.width, b.height, 12);
+    this.ctx.roundRect(b.x, b.y, b.width, b.height, 10);
     this.ctx.fill();
     this.ctx.stroke();
 
     // Pause bars ||
     this.ctx.fillStyle = '#f8fafc';
-    this.ctx.fillRect(b.x + 14, b.y + 12, 6, 24);
-    this.ctx.fillRect(b.x + 28, b.y + 12, 6, 24);
+    this.ctx.fillRect(b.x + 13, b.y + 9, 5, 20);
+    this.ctx.fillRect(b.x + 24, b.y + 9, 5, 20);
     this.ctx.restore();
   }
 
