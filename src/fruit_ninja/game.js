@@ -363,9 +363,21 @@ class FruitNinjaGame {
         return;
       }
 
-      // Presenter Slide Toggle: Alt+S toggles between Slide Browser and Kiosk (supports physical KeyS and Thai layout)
-      const isKeyS = e.code === 'KeyS' || e.key === 's' || e.key === 'S' || e.key === 'ห' || e.key === 'ฆ';
-      if (e.altKey && isKeyS) {
+      // Global Reset to Main Menu: Alt+V resets all state and returns to clean Main Menu (supports physical KeyV and Thai layout)
+      const isKeyV = e.code === 'KeyV' || e.key === 'v' || e.key === 'V' || e.key === 'อ' || e.key === 'ฮ';
+      if (e.altKey && isKeyV) {
+        e.preventDefault();
+        if (window.electronAPI && window.electronAPI.resetToMenu) {
+          window.electronAPI.resetToMenu();
+        } else {
+          window.location.href = '../menu/index.html';
+        }
+        return;
+      }
+
+      // Presenter Slide Toggle: Alt+X toggles between Slide Browser and Kiosk (supports physical KeyX and Thai layout)
+      const isKeyX = e.code === 'KeyX' || e.key === 'x' || e.key === 'X' || e.key === 'ป' || e.key === 'ผ';
+      if (e.altKey && isKeyX) {
         e.preventDefault();
         if (window.electronAPI && window.electronAPI.togglePresenter) {
           window.electronAPI.togglePresenter();

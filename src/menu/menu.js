@@ -38,9 +38,21 @@
       return;
     }
 
-    // Check Alt + S for presenter slide toggle (supports physical KeyS, uppercase, lowercase, and Thai layout)
-    const isKeyS = e.code === 'KeyS' || e.key === 's' || e.key === 'S' || e.key === 'ห' || e.key === 'ฆ';
-    if (e.altKey && isKeyS) {
+    // Check Alt + V for global reset to initial Main Menu state (supports physical KeyV, uppercase, lowercase, and Thai layout)
+    const isKeyV = e.code === 'KeyV' || e.key === 'v' || e.key === 'V' || e.key === 'อ' || e.key === 'ฮ';
+    if (e.altKey && isKeyV) {
+      e.preventDefault();
+      if (window.electronAPI && window.electronAPI.resetToMenu) {
+        window.electronAPI.resetToMenu();
+      } else {
+        window.location.reload();
+      }
+      return;
+    }
+
+    // Check Alt + X for presenter slide toggle (supports physical KeyX, uppercase, lowercase, and Thai layout)
+    const isKeyX = e.code === 'KeyX' || e.key === 'x' || e.key === 'X' || e.key === 'ป' || e.key === 'ผ';
+    if (e.altKey && isKeyX) {
       e.preventDefault();
       if (window.electronAPI && window.electronAPI.togglePresenter) {
         window.electronAPI.togglePresenter();

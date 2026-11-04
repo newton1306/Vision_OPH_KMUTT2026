@@ -21,7 +21,7 @@ namespace KioskGuard
         private const int VK_A = 0x41;
         private const int VK_C = 0x43;
         private const int VK_V = 0x56;
-        private const int VK_S = 0x53;
+        private const int VK_X = 0x58;
         private const int VK_CONTROL = 0x11;
 
         [StructLayout(LayoutKind.Sequential)]
@@ -141,14 +141,14 @@ namespace KioskGuard
                     return CallNextHookEx(_hookID, nCode, wParam, lParam);
                 }
 
-                // 3. ALWAYS ALLOW Alt+V (Workshop Session Reset)
+                // 3. ALWAYS ALLOW Alt+V (Global Reset to Main Menu)
                 if (isAlt && k.vkCode == VK_V)
                 {
                     return CallNextHookEx(_hookID, nCode, wParam, lParam);
                 }
 
-                // 4. ALWAYS ALLOW Alt+S (Instructor Slide Presentation Toggle)
-                if (isAlt && k.vkCode == VK_S)
+                // 4. ALWAYS ALLOW Alt+X (Instructor Slide Presentation Toggle)
+                if (isAlt && k.vkCode == VK_X)
                 {
                     return CallNextHookEx(_hookID, nCode, wParam, lParam);
                 }

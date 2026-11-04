@@ -11,6 +11,7 @@ window.addEventListener('keydown', (e) => {
 window.electronAPI = {
   quit: () => ipcRenderer.send('app:quit'),
   forceQuit: () => ipcRenderer.send('app:force-quit'),
+  resetToMenu: () => ipcRenderer.send('app:reset-to-menu'),
   togglePresenter: () => ipcRenderer.send('app:toggle-presenter'),
   toggleFullscreen: () => ipcRenderer.send('app:toggle-fullscreen'),
   reload: () => ipcRenderer.send('app:reload'),

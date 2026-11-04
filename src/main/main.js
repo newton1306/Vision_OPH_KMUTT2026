@@ -28,6 +28,31 @@ function togglePresenterMode() {
   }
 }
 
+function resetToMainMenu() {
+  if (!mainWindow) return;
+  console.log('[RESET] Global reset to Main Menu triggered via Alt+V...');
+
+  // If in presenter mode, restore kiosk state
+  if (isPresenterSwitched) {
+    isPresenterSwitched = false;
+  }
+
+  // Clear transient storage and caches
+  try {
+    mainWindow.webContents.session.clearStorageData({
+      storages: ['localstorage', 'sessionstorage', 'indexdb', 'websql', 'serviceworkers', 'cachestorage']
+    }).catch(() => {});
+  } catch (_) {}
+
+  // Load fresh Main Menu (starts cleanly unblurred before mouse movement)
+  mainWindow.loadFile(path.join(__dirname, '../menu/index.html'));
+
+  mainWindow.setKiosk(true);
+  mainWindow.setFullScreen(true);
+  mainWindow.setAlwaysOnTop(true, 'screen-saver', 1);
+  mainWindow.focus();
+}
+
 function startKioskGuard() {
   if (process.platform !== 'win32') return;
 
@@ -216,7 +241,7 @@ function createWindow() {
       return; // Let Alt+A pass to renderer
     }
 
-    // Allow Alt+V for CV workshop reset (support English and Thai layout)
+    // Global Reset to Main Menu on Alt + V (support English and Thai layout)
     const isKeyV = (
       input.code === 'KeyV' || 
       (input.key && input.key.toLowerCase() === 'v') ||
@@ -224,17 +249,19 @@ function createWindow() {
       input.key === 'ฮ'
     );
     if (input.alt && isKeyV) {
-      return; // Let Alt+V pass to renderer
+      event.preventDefault();
+      resetToMainMenu();
+      return;
     }
 
-    // Allow Alt+S for presenter slide toggle (support English and Thai layout)
-    const isKeyS = (
-      input.code === 'KeyS' || 
-      (input.key && input.key.toLowerCase() === 's') ||
-      input.key === 'ห' ||
-      input.key === 'ฆ'
+    // Allow Alt+X for presenter slide toggle (support English and Thai layout)
+    const isKeyX = (
+      input.code === 'KeyX' || 
+      (input.key && input.key.toLowerCase() === 'x') ||
+      input.key === 'ป' ||
+      input.key === 'ผ'
     );
-    if (input.alt && isKeyS) {
+    if (input.alt && isKeyX) {
       event.preventDefault();
       togglePresenterMode();
       return;
@@ -315,6 +342,10 @@ ipcMain.on('app:toggle-presenter', () => {
   togglePresenterMode();
 });
 
+ipcMain.on('app:reset-to-menu', () => {
+  resetToMainMenu();
+});
+
 ipcMain.on('app:switch-mode', (event, appName) => {
   if (!mainWindow) return;
   mainWindow.setKiosk(true);
@@ -342,13 +373,22 @@ app.whenReady().then(() => {
     console.error('[SECURITY] Failed to register Alt+C global shortcut:', err);
   }
 
-  // Global Presenter Shortcut: Alt+S toggles between Slide Browser and Kiosk DEMO
+  // Global Shortcut: Alt+V resets everything back to initial Main Menu state
   try {
-    globalShortcut.register('Alt+S', () => {
+    globalShortcut.register('Alt+V', () => {
+      resetToMainMenu();
+    });
+  } catch (err) {
+    console.error('[SECURITY] Failed to register Alt+V global shortcut:', err);
+  }
+
+  // Global Presenter Shortcut: Alt+X toggles between Slide Browser and Kiosk DEMO
+  try {
+    globalShortcut.register('Alt+X', () => {
       togglePresenterMode();
     });
   } catch (err) {
-    console.error('[SECURITY] Failed to register Alt+S global shortcut:', err);
+    console.error('[SECURITY] Failed to register Alt+X global shortcut:', err);
   }
 
   // Trap system keys globally to prevent bypassing kiosk mode
