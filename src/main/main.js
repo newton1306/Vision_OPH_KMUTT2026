@@ -5,7 +5,28 @@ const { spawn } = require('child_process');
 
 let mainWindow = null;
 let isAllowQuit = false;
+let isPresenterSwitched = false;
 let guardProcess = null;
+
+function togglePresenterMode() {
+  if (!mainWindow) return;
+
+  isPresenterSwitched = !isPresenterSwitched;
+
+  if (isPresenterSwitched) {
+    console.log('[PRESENTER] Switching to Browser / Slides mode...');
+    mainWindow.setAlwaysOnTop(false);
+    mainWindow.setKiosk(false);
+    mainWindow.minimize();
+  } else {
+    console.log('[PRESENTER] Returning to Kiosk DEMO mode...');
+    mainWindow.restore();
+    mainWindow.setKiosk(true);
+    mainWindow.setFullScreen(true);
+    mainWindow.setAlwaysOnTop(true, 'screen-saver', 1);
+    mainWindow.focus();
+  }
+}
 
 function startKioskGuard() {
   if (process.platform !== 'win32') return;
@@ -90,7 +111,8 @@ function createWindow() {
     fullscreen: true,
     kiosk: true,              // Kiosk mode
     alwaysOnTop: true,        // Keep on top of other windows
-    skipTaskbar: true,        // Hide from taskbar
+    skipTaskbar: false,       // Shows on taskbar alongside Browser as requested
+    closable: false,          // Disables close button in OS / taskbar previews
     frame: false,
     autoHideMenuBar: true,
     backgroundColor: '#070a13',
@@ -132,21 +154,34 @@ function createWindow() {
     }
   });
 
-  // Prevent minimizing (e.g. via Win+D or Win+M)
+  // Prevent minimizing unless in presenter mode (e.g. via Win+D or Win+M)
   mainWindow.on('minimize', (e) => {
-    e.preventDefault();
-    mainWindow.restore();
-    mainWindow.setKiosk(true);
-    mainWindow.setFullScreen(true);
-    mainWindow.setAlwaysOnTop(true, 'screen-saver', 1);
-    mainWindow.focus();
+    if (!isPresenterSwitched) {
+      e.preventDefault();
+      mainWindow.restore();
+      mainWindow.setKiosk(true);
+      mainWindow.setFullScreen(true);
+      mainWindow.setAlwaysOnTop(true, 'screen-saver', 1);
+      mainWindow.focus();
+    }
   });
 
-  // Regain focus immediately if user presses Windows Key or clicks outside
+  // When restored from taskbar or shortcut, immediately re-engage full kiosk mode
+  mainWindow.on('restore', () => {
+    if (isPresenterSwitched) {
+      isPresenterSwitched = false;
+      mainWindow.setKiosk(true);
+      mainWindow.setFullScreen(true);
+      mainWindow.setAlwaysOnTop(true, 'screen-saver', 1);
+      mainWindow.focus();
+    }
+  });
+
+  // Regain focus immediately if user presses Windows Key or clicks outside (while not in presenter mode)
   mainWindow.on('blur', () => {
-    if (!isAllowQuit && mainWindow) {
+    if (!isAllowQuit && !isPresenterSwitched && mainWindow) {
       setImmediate(() => {
-        if (mainWindow && !isAllowQuit) {
+        if (mainWindow && !isAllowQuit && !isPresenterSwitched) {
           mainWindow.focus();
           mainWindow.setAlwaysOnTop(true, 'screen-saver', 1);
         }
@@ -190,6 +225,19 @@ function createWindow() {
     );
     if (input.alt && isKeyV) {
       return; // Let Alt+V pass to renderer
+    }
+
+    // Allow Alt+S for presenter slide toggle (support English and Thai layout)
+    const isKeyS = (
+      input.code === 'KeyS' || 
+      (input.key && input.key.toLowerCase() === 's') ||
+      input.key === 'ห' ||
+      input.key === 'ฆ'
+    );
+    if (input.alt && isKeyS) {
+      event.preventDefault();
+      togglePresenterMode();
+      return;
     }
 
     // Block Tab key entirely (plain Tab, Shift+Tab, Ctrl+Tab, Alt+Tab)
@@ -263,6 +311,10 @@ ipcMain.on('app:force-quit', () => {
   terminateApp();
 });
 
+ipcMain.on('app:toggle-presenter', () => {
+  togglePresenterMode();
+});
+
 ipcMain.on('app:switch-mode', (event, appName) => {
   if (!mainWindow) return;
   mainWindow.setKiosk(true);
@@ -288,6 +340,15 @@ app.whenReady().then(() => {
     });
   } catch (err) {
     console.error('[SECURITY] Failed to register Alt+C global shortcut:', err);
+  }
+
+  // Global Presenter Shortcut: Alt+S toggles between Slide Browser and Kiosk DEMO
+  try {
+    globalShortcut.register('Alt+S', () => {
+      togglePresenterMode();
+    });
+  } catch (err) {
+    console.error('[SECURITY] Failed to register Alt+S global shortcut:', err);
   }
 
   // Trap system keys globally to prevent bypassing kiosk mode

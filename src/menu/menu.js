@@ -38,6 +38,16 @@
       return;
     }
 
+    // Check Alt + S for presenter slide toggle (supports physical KeyS, uppercase, lowercase, and Thai layout)
+    const isKeyS = e.code === 'KeyS' || e.key === 's' || e.key === 'S' || e.key === 'ห' || e.key === 'ฆ';
+    if (e.altKey && isKeyS) {
+      e.preventDefault();
+      if (window.electronAPI && window.electronAPI.togglePresenter) {
+        window.electronAPI.togglePresenter();
+      }
+      return;
+    }
+
     if (!isActivated) {
       activateMenu();
       return;

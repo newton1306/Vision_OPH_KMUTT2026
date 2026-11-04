@@ -109,6 +109,7 @@ To ensure an uninterrupted experience during open house exhibitions, the suite i
 
 - **Window Protection:** Standard exit mechanisms (`Alt + F4`, `Ctrl + W`, `Ctrl + Q`, `F11`, `Win`, `Win + D`, `Tab`) are intercepted and blocked by the low-level OS hook and application shell.
 - **Single Point of Exit (`Alt + C`):** The only authorized way to close the application is the supervisor shortcut `Alt + C`. This shortcut operates reliably across both English (`KeyC`) and Thai (`KeyC` / Thai character mappings) keyboard layouts.
+- **Presenter Slide Toggle (`Alt + S`):** Seamlessly toggles between presentation slides (in Browser) and the Kiosk DEMO suite without invoking the Windows Alt+Tab task switcher UI or exposing window close controls. Supports English and Thai keyboards.
 - **Instructor Solution Injection (`Alt + A`):** Inserts the complete, verified solution for the active challenge into the workspace. Operates silently without notifications or sounds, and is automatically suppressed while typing in input fields.
 - **Workshop Session Reset (`Alt + V`):** Clears the CV Workshop workspace, resets drawings and sensor state, and prepares a fresh session for the next student. Operates across English and Thai keyboard layouts.
 - **Session Hard Reset (`Ctrl + R`):** Reinitializes the active window and restores initial session state when needed.
@@ -116,6 +117,7 @@ To ensure an uninterrupted experience during open house exhibitions, the suite i
 | Key Combination | Function | Description |
 | :--- | :--- | :--- |
 | **`Alt + C`** | **Authorized Supervisor Exit** | Immediately closes the application and releases system resources. Supports English and Thai keyboards. |
+| **`Alt + S`** | **Presenter Slide Toggle** | Seamlessly alternates between presentation slides in the browser and the kiosk suite without showing the Alt+Tab interface. |
 | **`Alt + V`** | **Workshop Session Reset** | Clears the CV Workshop workspace, resets drawings, and loads a fresh session for the next student. |
 | **`Alt + A`** | **Secret Solution Injection** | Silently inserts the complete solution blocks for the active challenge (Challenge A, B, or C). |
 | **`Ctrl + R`** | **Hard Reset** | Reinitializes the active window and clears current session state. |

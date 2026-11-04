@@ -363,6 +363,16 @@ class FruitNinjaGame {
         return;
       }
 
+      // Presenter Slide Toggle: Alt+S toggles between Slide Browser and Kiosk (supports physical KeyS and Thai layout)
+      const isKeyS = e.code === 'KeyS' || e.key === 's' || e.key === 'S' || e.key === 'ห' || e.key === 'ฆ';
+      if (e.altKey && isKeyS) {
+        e.preventDefault();
+        if (window.electronAPI && window.electronAPI.togglePresenter) {
+          window.electronAPI.togglePresenter();
+        }
+        return;
+      }
+
       // ESC key returns to Main Menu
       if (e.key === 'Escape') {
         e.preventDefault();

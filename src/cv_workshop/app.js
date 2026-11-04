@@ -759,6 +759,16 @@ class CVWorkshopApp {
         return;
       }
 
+      // Presenter Slide Toggle: Alt+S toggles between Slide Browser and Kiosk (supports physical KeyS and Thai layout)
+      const isKeyS = e.code === 'KeyS' || e.key === 's' || e.key === 'S' || e.key === 'ห' || e.key === 'ฆ';
+      if (e.altKey && isKeyS) {
+        e.preventDefault();
+        if (window.electronAPI && window.electronAPI.togglePresenter) {
+          window.electronAPI.togglePresenter();
+        }
+        return;
+      }
+
       // Secret Admin Shortcut: Alt+A silently spawns the correct solution onto active challenge workspace
       const isKeyA = e.code === 'KeyA' || e.key === 'a' || e.key === 'A' || e.key === 'ฟ' || e.key === 'ฤ';
       if (e.altKey && isKeyA) {
