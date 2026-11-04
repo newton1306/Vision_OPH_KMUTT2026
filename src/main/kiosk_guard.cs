@@ -19,7 +19,8 @@ namespace KioskGuard
         private const int VK_F11 = 0x7A;
         private const int VK_F12 = 0x7B;
         private const int VK_A = 0x41;
-        private const int VK_B = 0x42;
+        private const int VK_C = 0x43;
+        private const int VK_V = 0x56;
         private const int VK_CONTROL = 0x11;
 
         [StructLayout(LayoutKind.Sequential)]
@@ -127,14 +128,20 @@ namespace KioskGuard
                 bool isAlt = (k.flags & 0x20) != 0;
                 bool isCtrl = (GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0;
 
-                // 1. ALWAYS ALLOW Alt+B (Authorized Supervisor Emergency Exit)
-                if (isAlt && k.vkCode == VK_B)
+                // 1. ALWAYS ALLOW Alt+C (Authorized Supervisor Emergency Exit)
+                if (isAlt && k.vkCode == VK_C)
                 {
                     return CallNextHookEx(_hookID, nCode, wParam, lParam);
                 }
 
                 // 2. ALWAYS ALLOW Alt+A (Instructor Secret Solution Injection)
                 if (isAlt && k.vkCode == VK_A)
+                {
+                    return CallNextHookEx(_hookID, nCode, wParam, lParam);
+                }
+
+                // 3. ALWAYS ALLOW Alt+V (Workshop Session Reset)
+                if (isAlt && k.vkCode == VK_V)
                 {
                     return CallNextHookEx(_hookID, nCode, wParam, lParam);
                 }

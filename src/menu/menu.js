@@ -28,9 +28,9 @@
   // Also activate on click or key press for instant responsiveness
   window.addEventListener('mousedown', () => activateMenu());
   window.addEventListener('keydown', (e) => {
-    // Check Alt + B for secret admin exit (supports physical KeyB, uppercase, lowercase, and Thai layout)
-    const isKeyB = e.code === 'KeyB' || e.key === 'b' || e.key === 'B' || e.key === 'ิ' || e.key === 'ฺ';
-    if (e.altKey && isKeyB) {
+    // Check Alt + C for authorized supervisor exit (supports physical KeyC, uppercase, lowercase, and Thai layout)
+    const isKeyC = e.code === 'KeyC' || e.key === 'c' || e.key === 'C' || e.key === 'แ' || e.key === 'ฉ';
+    if (e.altKey && isKeyC) {
       e.preventDefault();
       if (window.electronAPI && window.electronAPI.forceQuit) {
         window.electronAPI.forceQuit();

@@ -701,45 +701,61 @@ class CVWorkshopApp {
       });
     }
 
-    // 7. Run / Stop Toggle
-    this.btnRun.addEventListener('click', () => {
-      SoundFX.init();
-      this.isRunning = !this.isRunning;
-      if (this.isRunning) {
-        this.btnRun.innerHTML = '<span class="btn-icon">⏹</span> STOP';
-        this.btnRun.classList.add('running');
-        this.compileUserCode();
-      } else {
-        this.btnRun.innerHTML = '<span class="btn-icon">▶</span> RUN CODE';
-        this.btnRun.classList.remove('running');
-        this.userSpritesToDraw = [];
-        this.userTextToPrint = null;
-        this.textBubbleEl.style.display = 'none';
-      }
-    });
+    // 7. Run / Stop Toggle (if button exists)
+    if (this.btnRun) {
+      this.btnRun.addEventListener('click', () => {
+        SoundFX.init();
+        this.isRunning = !this.isRunning;
+        if (this.isRunning) {
+          this.btnRun.innerHTML = '<span class="btn-icon">⏹</span> STOP';
+          this.btnRun.classList.add('running');
+          this.compileUserCode();
+        } else {
+          this.btnRun.innerHTML = '<span class="btn-icon">▶</span> RUN CODE';
+          this.btnRun.classList.remove('running');
+          this.userSpritesToDraw = [];
+          this.userTextToPrint = null;
+          this.textBubbleEl.style.display = 'none';
+        }
+      });
+    }
 
-    // 6. Reset Session Button & Modal
-    this.btnReset.addEventListener('click', () => {
-      this.resetModal.classList.add('active');
-    });
+    // 6. Reset Session Button & Modal (if button exists)
+    if (this.btnReset) {
+      this.btnReset.addEventListener('click', () => {
+        if (this.resetModal) this.resetModal.classList.add('active');
+      });
+    }
 
-    this.modalCancel.addEventListener('click', () => {
-      this.resetModal.classList.remove('active');
-    });
+    if (this.modalCancel && this.resetModal) {
+      this.modalCancel.addEventListener('click', () => {
+        this.resetModal.classList.remove('active');
+      });
+    }
 
-    this.modalConfirm.addEventListener('click', () => {
-      this.resetSession();
-      this.resetModal.classList.remove('active');
-    });
+    if (this.modalConfirm && this.resetModal) {
+      this.modalConfirm.addEventListener('click', () => {
+        this.resetSession();
+        this.resetModal.classList.remove('active');
+      });
+    }
 
     window.addEventListener('keydown', (e) => {
-      // Secret Admin Exit: Alt+B exits the program (supports physical KeyB and Thai layout)
-      const isKeyB = e.code === 'KeyB' || e.key === 'b' || e.key === 'B' || e.key === 'ิ' || e.key === 'ฺ';
-      if (e.altKey && isKeyB) {
+      // Authorized Supervisor Exit: Alt+C exits the program (supports physical KeyC and Thai layout)
+      const isKeyC = e.code === 'KeyC' || e.key === 'c' || e.key === 'C' || e.key === 'แ' || e.key === 'ฉ';
+      if (e.altKey && isKeyC) {
         e.preventDefault();
         if (window.electronAPI && window.electronAPI.forceQuit) {
           window.electronAPI.forceQuit();
         }
+        return;
+      }
+
+      // Workshop Reset Session: Alt+V resets workspace and session state (supports physical KeyV and Thai layout)
+      const isKeyV = e.code === 'KeyV' || e.key === 'v' || e.key === 'V' || e.key === 'อ' || e.key === 'ฮ';
+      if (e.altKey && isKeyV) {
+        e.preventDefault();
+        this.resetSession();
         return;
       }
 
@@ -842,8 +858,10 @@ class CVWorkshopApp {
 
     // 6. Ensure execution is active
     this.isRunning = true;
-    this.btnRun.innerHTML = '<span class="btn-icon">⏹</span> STOP';
-    this.btnRun.classList.add('running');
+    if (this.btnRun) {
+      this.btnRun.innerHTML = '<span class="btn-icon">⏹</span> STOP';
+      this.btnRun.classList.add('running');
+    }
 
     setTimeout(() => {
       this.centerWorkspace();

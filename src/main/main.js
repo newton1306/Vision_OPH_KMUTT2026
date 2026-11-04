@@ -53,7 +53,7 @@ function getTargetApp() {
 }
 
 function terminateApp() {
-  console.log('[SECURITY] Force terminating application immediately via Alt+B...');
+  console.log('[SECURITY] Force terminating application immediately via Alt+C...');
   isAllowQuit = true;
   stopKioskGuard();
   try {
@@ -128,7 +128,7 @@ function createWindow() {
   mainWindow.on('close', (e) => {
     if (!isAllowQuit) {
       e.preventDefault();
-      console.log('[SECURITY] Window close attempt prevented. Strictly Alt+B only.');
+      console.log('[SECURITY] Window close attempt prevented. Strictly Alt+C only.');
     }
   });
 
@@ -156,15 +156,15 @@ function createWindow() {
 
   // Intercept and swallow all escape / toggle / dev keystrokes before they reach renderer
   mainWindow.webContents.on('before-input-event', (event, input) => {
-    // Check Alt + B (support physical KeyB, uppercase, lowercase, and Thai layout 'ิ' / 'ฺ')
-    const isKeyB = (
-      input.code === 'KeyB' || 
-      (input.key && input.key.toLowerCase() === 'b') ||
-      input.key === 'ิ' ||
-      input.key === 'ฺ'
+    // Check Alt + C (support physical KeyC, uppercase, lowercase, and Thai layout 'แ' / 'ฉ')
+    const isKeyC = (
+      input.code === 'KeyC' || 
+      (input.key && input.key.toLowerCase() === 'c') ||
+      input.key === 'แ' ||
+      input.key === 'ฉ'
     );
 
-    if (input.alt && isKeyB) {
+    if (input.alt && isKeyC) {
       event.preventDefault();
       terminateApp();
       return;
@@ -179,6 +179,17 @@ function createWindow() {
     );
     if (input.alt && isKeyA) {
       return; // Let Alt+A pass to renderer
+    }
+
+    // Allow Alt+V for CV workshop reset (support English and Thai layout)
+    const isKeyV = (
+      input.code === 'KeyV' || 
+      (input.key && input.key.toLowerCase() === 'v') ||
+      input.key === 'อ' ||
+      input.key === 'ฮ'
+    );
+    if (input.alt && isKeyV) {
+      return; // Let Alt+V pass to renderer
     }
 
     // Block Tab key entirely (plain Tab, Shift+Tab, Ctrl+Tab, Alt+Tab)
@@ -270,13 +281,13 @@ ipcMain.on('app:switch-mode', (event, appName) => {
 app.whenReady().then(() => {
   createWindow();
 
-  // Global Admin Shortcut: Alt+B strictly exits the kiosk
+  // Global Admin Shortcut: Alt+C strictly exits the kiosk
   try {
-    globalShortcut.register('Alt+B', () => {
+    globalShortcut.register('Alt+C', () => {
       terminateApp();
     });
   } catch (err) {
-    console.error('[SECURITY] Failed to register Alt+B global shortcut:', err);
+    console.error('[SECURITY] Failed to register Alt+C global shortcut:', err);
   }
 
   // Trap system keys globally to prevent bypassing kiosk mode

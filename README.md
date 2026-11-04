@@ -107,14 +107,16 @@ Each challenge uses a **Dynamic Toolbox** that exposes only the blocks relevant 
 
 To ensure an uninterrupted experience during open house exhibitions, the suite implements strict kiosk lockdown policies:
 
-- **Window Protection:** Standard exit mechanisms (`Alt + F4`, `Ctrl + W`, `Ctrl + Q`, `F11`, `Win`, `Win + D`) are intercepted and blocked by the application shell.
-- **Single Point of Exit (`Alt + B`):** The only authorized way to close the application is the supervisor shortcut `Alt + B`. This shortcut operates reliably across both English (`KeyB`) and Thai (`KeyB` / Thai character mappings) keyboard layouts.
+- **Window Protection:** Standard exit mechanisms (`Alt + F4`, `Ctrl + W`, `Ctrl + Q`, `F11`, `Win`, `Win + D`, `Tab`) are intercepted and blocked by the low-level OS hook and application shell.
+- **Single Point of Exit (`Alt + C`):** The only authorized way to close the application is the supervisor shortcut `Alt + C`. This shortcut operates reliably across both English (`KeyC`) and Thai (`KeyC` / Thai character mappings) keyboard layouts.
 - **Instructor Solution Injection (`Alt + A`):** Inserts the complete, verified solution for the active challenge into the workspace. Operates silently without notifications or sounds, and is automatically suppressed while typing in input fields.
-- **Session Reset (`Ctrl + R`):** Reinitializes the Electron window and restores initial session state when needed.
+- **Workshop Session Reset (`Alt + V`):** Clears the CV Workshop workspace, resets drawings and sensor state, and prepares a fresh session for the next student. Operates across English and Thai keyboard layouts.
+- **Session Hard Reset (`Ctrl + R`):** Reinitializes the active window and restores initial session state when needed.
 
 | Key Combination | Function | Description |
 | :--- | :--- | :--- |
-| **`Alt + B`** | **Authorized Supervisor Exit** | Immediately closes the application and releases system resources. Supports English and Thai keyboards. |
+| **`Alt + C`** | **Authorized Supervisor Exit** | Immediately closes the application and releases system resources. Supports English and Thai keyboards. |
+| **`Alt + V`** | **Workshop Session Reset** | Clears the CV Workshop workspace, resets drawings, and loads a fresh session for the next student. |
 | **`Alt + A`** | **Secret Solution Injection** | Silently inserts the complete solution blocks for the active challenge (Challenge A, B, or C). |
 | **`Ctrl + R`** | **Hard Reset** | Reinitializes the active window and clears current session state. |
 

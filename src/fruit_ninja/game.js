@@ -353,9 +353,9 @@ class FruitNinjaGame {
 
     // Keyboard Shortcuts
     window.addEventListener('keydown', (e) => {
-      // Secret Admin Exit: Alt+B exits the program (supports physical KeyB and Thai layout)
-      const isKeyB = e.code === 'KeyB' || e.key === 'b' || e.key === 'B' || e.key === 'ิ' || e.key === 'ฺ';
-      if (e.altKey && isKeyB) {
+      // Authorized Supervisor Exit: Alt+C exits the program (supports physical KeyC and Thai layout)
+      const isKeyC = e.code === 'KeyC' || e.key === 'c' || e.key === 'C' || e.key === 'แ' || e.key === 'ฉ';
+      if (e.altKey && isKeyC) {
         e.preventDefault();
         if (window.electronAPI && window.electronAPI.forceQuit) {
           window.electronAPI.forceQuit();
